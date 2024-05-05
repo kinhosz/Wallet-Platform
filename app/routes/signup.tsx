@@ -22,7 +22,7 @@ export const action = async ({
             return json({}, { status: response.status });
         }
     } catch(error) {
-        return json({}, { status: 500 });
+        return redirect('/error');
     }
 }
 
