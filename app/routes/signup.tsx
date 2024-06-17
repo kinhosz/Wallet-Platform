@@ -1,4 +1,4 @@
-import { useFetcher } from '@remix-run/react';
+import { useActionData, Form } from '@remix-run/react';
 import { ActionFunctionArgs, json, redirect } from '@remix-run/node';
 import React, { useState } from 'react';
 import { CiWarning } from 'react-icons/ci';
@@ -47,7 +47,8 @@ const WarningField: React.FC<{
 }
 
 function Signup() {
-    const fetcher = useFetcher();
+    const data = useActionData<typeof action>();
+
     const [isEmailOnFocus, setIsEmailOnFocus] = useState(false);
     const [isValidEmail, setIsValidEmail] = useState(false);
     const [isPasswordOnFocus, setIsPasswordOnFocus] = useState(false);
@@ -73,10 +74,10 @@ function Signup() {
         <div className='bg-wallet_blue w-screen h-screen flex items-center justify-center font-wallet_primary'>
             <div className='flex flex-col space-y-8 md:w-[calc(100%/5)] min-w-16'>
                 <h1 className='text-4xl font-bold text-white text-center'>Signup</h1>
-                <fetcher.Form method="post" action="/signup" className='flex flex-col space-y-4'>
+                <Form method="post" action="/signup" className='flex flex-col space-y-4'>
                     <input
                         className={`rounded-xl text-sm p-2 w-full placeholder-text-base ${
-                                !isValidEmail ? 'focus:border-wallet_red focus:border-2 focus:outline-none' : ''
+                                !isValidName ? 'focus:border-wallet_red focus:border-2 focus:outline-none' : ''
                             }
                         `}
                         name="name" type="text" placeholder="Name" onChange={(e) => handleNameChange(e.target.value)}
@@ -110,6 +111,11 @@ function Signup() {
                         condition={!atLeast6Characters && isPasswordOnFocus}
                         message="Minimum is 6 characters"
                     />
+                    { data && data.error && (
+                        <div className="p-2 text-sm text-red-700 bg-red-100 rounded-lg" role="alert">
+                            <span>{data.error}</span>
+                        </div>
+                    )}
                     <div className='flex justify-center'>
                         <button 
                             className={`bg-wallet_orange rounded-xl text-bold text-sm text-white py-2 px-8 button
@@ -123,7 +129,7 @@ function Signup() {
                             Submit
                         </button>
                     </div>
-                </fetcher.Form>
+                </Form>
             </div>
         </div>
     );
