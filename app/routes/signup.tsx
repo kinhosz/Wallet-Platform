@@ -1,7 +1,7 @@
 import { useActionData, Form } from '@remix-run/react';
 import { ActionFunctionArgs, json, redirect } from '@remix-run/node';
 import React, { useState } from 'react';
-import { CiWarning } from 'react-icons/ci';
+import WarningField from '../components/warning';
 
 export const action = async ({
     request,
@@ -28,22 +28,6 @@ export const action = async ({
     } catch(error) {
         return redirect('/error');
     }
-}
-
-const WarningField: React.FC<{
-    condition: boolean;
-    message: string;
-}> = ({
-    condition,
-    message
-}) => {
-    if (!condition) return null;
-    return (
-        <div className='font-wallet_secondary text-white text-sm flex items-center'>
-            <CiWarning className="mx-2" />
-            <span>{message}</span>
-        </div>
-    );
 }
 
 function Signup() {
