@@ -1,7 +1,8 @@
 import { useActionData, Form } from '@remix-run/react';
 import { ActionFunctionArgs, json, redirect } from '@remix-run/node';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import WarningField from '../components/warning';
+import Base from '../services/base.server';
 
 export const action = async ({
     request,
@@ -9,24 +10,21 @@ export const action = async ({
     const formData = await request.formData();
     const user = Object.fromEntries(formData);
 
-    try {
-        const response = await fetch('http://localhost:3001/signup', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ user: user }),
-        });
+    const response = await Base(
+        'signup',
+        'POST',
+        { 'Content-Type': 'application/json'},
+        JSON.stringify({ user: user }),
+    );
 
-        if (response.ok) {
-            return redirect('/');
-        } else {
-            const data = await response.json();
-            const errorMessage = data.status ? data.status.message : 'Unknown error';
-            return json({ error: errorMessage });
-        }
-    } catch(error) {
-        return redirect('/error');
+    if (!response) return redirect('/error');
+
+    if (response.ok) {
+        return redirect('/');
+    } else {
+        const data = await response.json();
+        const errorMessage = data.status ? data.status.message : 'Unknown error';
+        return json({ error: errorMessage });
     }
 }
 
