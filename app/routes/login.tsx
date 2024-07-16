@@ -1,4 +1,4 @@
-import { ActionFunctionArgs, json, redirect } from '@remix-run/node';
+import { ActionFunctionArgs, createCookie, json, redirect } from '@remix-run/node';
 import { useActionData, Form } from '@remix-run/react';
 import WarningField from '../components/warning';
 import Base from '../services/base.server';
@@ -19,15 +19,22 @@ export const action = async ({
 
     if (response.ok) {
         const token = response.headers.get('Authorization');
-        if (token) {
-            return redirect('/', {
-                headers: {
-                    'Set-Cookie': `token=${token}; Path=/; HttpOnly`,
-                },
-            });
-        } else {
+        if (!token) {
             return json({ error: 'Failed to retrieve token.' }, { status: 401 });
         }
+
+        const authCookie = createCookie("authToken", {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'lax',
+            path: '/',
+        })
+
+        return redirect('/', {
+            headers: {
+                'Set-Cookie': await authCookie.serialize(token),
+            },
+        });
     } else {
         const errorMessage = response.status === 401 ? 'Invalid Email Or Password' : 'Unknow Error';
 
