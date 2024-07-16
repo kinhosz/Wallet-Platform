@@ -1,7 +1,7 @@
 function InternalError() {
     return (
         <div>
-            <h2>Internal Error</h2>
+            <h2>mudanças</h2>
         </div>
     );
 }
