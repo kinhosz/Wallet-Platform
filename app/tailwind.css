@@ -6,3 +6,47 @@
     opacity: 0.5;
     cursor: not-allowed;
 }
+
+/* Regular */
+@font-face {
+    font-family: 'Raleway';
+    src: url('/styles/fonts/Raleway-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+/* Medium */
+@font-face {
+    font-family: 'Raleway';
+    src: url('/styles/fonts/Raleway-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+}
+
+/* SemiBold */
+@font-face {
+    font-family: 'Raleway';
+    src: url('/styles/fonts/Raleway-SemiBold.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+}
+
+/* Bold */
+@font-face {
+    font-family: 'Raleway';
+    src: url('/styles/fonts/Raleway-Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+}
+
+/* Italic */
+@font-face {
+    font-family: 'Raleway';
+    src: url('/styles/fonts/Raleway-Italic.ttf') format('truetype');
+    font-weight: 400;
+    font-style: italic;
+}
+  
+body {
+    font-family: 'Raleway', sans-serif;
+}

@@ -12,9 +12,17 @@ export default {
         wallet_red: '#C53928',
       },
       fontFamily: {
-        wallet_primary: ['Inter', 'sans-serif'],
-        wallet_secondary: ['Helvetica Neue', 'Arial', 'sans-serif'],
-      }
+        wallet_primary: ['Raleway', 'sans-serif'],
+      },
+      fontWeight: {
+        regular: '400',
+        medium: '500',
+        semibold: '600',
+        bold: '700',
+      },
+      fontStyle: {
+        italic: 'italic',
+      },
     },
   },
   plugins: [],
