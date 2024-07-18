@@ -1,7 +1,11 @@
-import { redirect, type MetaFunction, json, ActionFunctionArgs } from "@remix-run/node";
+import { redirect, type MetaFunction, ActionFunctionArgs } from "@remix-run/node";
 import Base from "../services/base.server"
 import GetAuthToken from "~/services/getAuthToken.server";
-import { useLoaderData } from "@remix-run/react";
+import { Outlet, useLoaderData } from "@remix-run/react";
+import { Context } from "~/types/context";
+import TabSheet from "~/components/tabsheet";
+import { BR } from "country-flag-icons/react/3x2";
+import { MdChevronRight } from "react-icons/md";
 
 export const meta: MetaFunction = () => {
   return [
@@ -14,7 +18,7 @@ export async function loader({ request }: ActionFunctionArgs) {
   const token = await GetAuthToken(request);
 
   if (!token) {
-    return json({ user: null }, { status: 401 });
+    return redirect('/error');
   }
 
   const response = await Base(
@@ -27,29 +31,46 @@ export async function loader({ request }: ActionFunctionArgs) {
   );
   if (!response) return redirect('/error');
 
-  if (!response.ok) {
-    return json({ user: null }, { status: response.status });
-  }
+  if (!response.ok) return redirect('/login');
 
   const user = await response.json();
-  return { user: user };
+  const context: Context = {
+    user: user,
+    month: 'June',
+    currency: 'BRL',
+  };
+  return context;
 }
 
 export default function Index() {
-  const { user } = useLoaderData<typeof loader>();
+  const context = useLoaderData<typeof loader>();
 
   return (
-    <div className="rounded-lg bg-gray-200 p-4">
-      <p>Feito com <span className="text-red-500">&hearts;</span> por Você</p>
-      { user ? (
-        <div>
-          <p>Welcome {user.name}!</p>
-          <p>Your email is: {user.email}</p>
+    <div className="font-bold">
+      <nav className="bg-wallet_blue text-white">
+        <div className="grid grid-cols-3 p-8">
+          <div className="text-xl text-start">Hello, {context.user.name}!</div>
+          <div className="text-3xl text-center">{context.month}</div>
+          <div className="flex ml-auto">
+            <div className="bg-wallet_orange text-xl p-2 rounded-xl grid grid-cols-3 
+              border border-black shadow-lg hover:bg-wallet_orange_dark active:shadow-inner
+              active:border-white">
+              <BR title="Brazil" className="rounded-full"/>
+              <div>{context.currency}</div>
+              <MdChevronRight size={26} color="white" />
+            </div>
+          </div>
         </div>
-      ) : (
-        <p>Logged out!</p>
-      )
-      }
+        <div className="flex mt-8">
+          <TabSheet active={false} title={'Transactions'} to={'/overview'} />
+          <TabSheet active={true} title={'Overview'} to={'/overview'} />
+          <TabSheet active={false} title={'Planning'} to={'/overview'} />
+          <TabSheet active={false} title={'Charts'} to={'/overview'} />
+        </div>
+      </nav>
+      <main>
+        <Outlet />
+      </main>
     </div>
   );
 }
