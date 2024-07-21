@@ -5,6 +5,5 @@ interface User {
 
 export interface Context {
     user: User;
-    month: string;
     currency: string;
 }

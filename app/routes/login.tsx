@@ -30,7 +30,7 @@ export const action = async ({
             path: '/',
         })
 
-        return redirect('/', {
+        return redirect('/overview', {
             headers: {
                 'Set-Cookie': await authCookie.serialize(token),
             },
