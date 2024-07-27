@@ -1,4 +1,4 @@
-import { useActionData, Form } from '@remix-run/react';
+import { useActionData, Form, useNavigate } from '@remix-run/react';
 import { ActionFunctionArgs, json, redirect } from '@remix-run/node';
 import { useState } from 'react';
 import WarningField from '../components/warning';
@@ -51,6 +51,10 @@ function Signup() {
     const handleNameChange = (name: string) => {
         setIsValidName(name.length != 0);
     }
+    const navigate = useNavigate();
+    const handleSignUpClick = () => {
+        navigate('/login');
+    };
 
     return (
         <div className='bg-wallet_blue w-screen h-screen flex items-center justify-center font-wallet_primary'>
@@ -98,6 +102,14 @@ function Signup() {
                             <span>{data.error}</span>
                         </div>
                     )}
+                    <div className='flex justify-center'>
+                        <p className='text-white text-sm'>
+                            Já tem uma conta? Clique{' '}
+                            <span onClick={handleSignUpClick} className='font-bold underline text-wallet_orange cursor-pointer'>
+                                aqui
+                            </span>
+                        </p>
+                    </div>
                     <div className='flex justify-center'>
                         <button 
                             className={`bg-wallet_orange rounded-xl text-bold text-sm text-white py-2 px-8 button
