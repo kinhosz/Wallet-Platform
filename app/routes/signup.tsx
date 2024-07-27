@@ -20,7 +20,7 @@ export const action = async ({
     if (!response) return redirect('/error');
 
     if (response.ok) {
-        return redirect('/');
+        return redirect('/overview');
     } else {
         const data = await response.json();
         const errorMessage = data.status ? data.status.message : 'Unknown error';
