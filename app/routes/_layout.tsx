@@ -1,5 +1,5 @@
 import { redirect, ActionFunctionArgs } from "@remix-run/node";
-import Base from "../services/base.server"
+import Base from "../services/base.server";
 import GetAuthToken from "~/services/getAuthToken.server";
 import { Outlet, useLoaderData, useLocation } from "@remix-run/react";
 import { Context } from "~/types/context";
@@ -47,7 +47,14 @@ export default function Index() {
     <div className="font-bold">
       <nav className="bg-wallet_blue text-white">
         <div className="grid grid-cols-3 p-8">
-          <div className="text-xl text-start">Hello, {context.user.name}!</div>
+          <div className="flex items-center text-xl text-start">
+            <img
+              src={context.user.profileImageUrl}
+              alt="Profile"
+              className="w-8 h-8 rounded-full mr-2"
+            />
+            Hello, {context.user.name}!
+          </div>
           <div className="text-3xl text-center">Wallet</div>
           <div className="flex ml-auto">
             <div className="bg-wallet_orange text-xl p-2 rounded-xl grid grid-cols-3 
