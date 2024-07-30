@@ -4,11 +4,10 @@ import GetAuthToken from "~/services/getAuthToken.server";
 import { Outlet, useLoaderData, useLocation } from "@remix-run/react";
 import { Context } from "~/types/context";
 import TabSheet from "~/components/tabsheet";
-import { BR } from "country-flag-icons/react/3x2";
-import { MdChevronRight } from "react-icons/md";
 import { useEffect, useState } from "react";
 import { FiUser } from "react-icons/fi";
 import Sidebar from "../components/sidebar";
+import CurrencySelector from "~/components/currencySelector";
 
 export async function loader({ request }: ActionFunctionArgs) {
   const token = await GetAuthToken(request);
@@ -65,13 +64,7 @@ export default function Index() {
           </div>
           <div className="text-3xl text-center">Wallet</div>
           <div className="flex ml-auto">
-            <div className="bg-wallet_orange text-xl p-2 rounded-xl grid grid-cols-3 
-              border border-black shadow-lg hover:bg-wallet_orange_dark active:shadow-inner
-              active:border-white">
-              <BR title="Brazil" className="rounded-full"/>
-              <div>{context.currency}</div>
-              <MdChevronRight size={26} color="white" />
-            </div>
+            <CurrencySelector />
           </div>
         </div>
         <div className="flex mt-8">

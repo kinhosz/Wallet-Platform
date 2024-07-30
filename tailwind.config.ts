@@ -10,6 +10,7 @@ export default {
         wallet_orange_light: '#FF7F50',
         wallet_orange_dark: '#E65100',
         wallet_red: '#C53928',
+        wallet_gray: '#D9D9D9',
       },
       fontFamily: {
         wallet_primary: ['Raleway', 'sans-serif'],
