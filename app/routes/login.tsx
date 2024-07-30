@@ -34,7 +34,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
             },
         });
     } else {
-        const errorMessage = response.status === 401 ? 'Invalid Email Or Password' : 'Unknown Error';
+        const errorMessage = response.status === 401 ? 'Invalid email or password.' : 'Unknown error occurred.';
 
         return json({ error: errorMessage }, { status: response.status });
     }
@@ -57,17 +57,17 @@ function Login() {
                     <input name="password" type="password" placeholder="Password" className='rounded-xl text-sm p-2 w-full placeholder-text-base' />
                     <WarningField condition={!!actionData?.error} message={actionData?.error || ''} />
                     <div className='flex justify-center'>
-                        <p className='text-white text-sm'>
-                            Não tem uma conta? Clique{' '}
-                            <span onClick={handleSignUpClick} className='font-bold underline text-wallet_orange cursor-pointer'>
-                                aqui
-                            </span>
-                        </p>
-                    </div>
-                    <div className='flex justify-center'>
                         <button type="submit" className='bg-wallet_orange rounded-xl text-bold text-sm text-white py-2 px-8'>
                             Submit
                         </button>
+                    </div>
+                    <div className='flex justify-center'>
+                        <p className='text-white text-sm'>
+                            Don't have an account? Click{' '}
+                            <span onClick={handleSignUpClick} className='font-bold underline text-wallet_orange cursor-pointer'>
+                                here
+                            </span>
+                        </p>
                     </div>
                 </Form>
             </div>

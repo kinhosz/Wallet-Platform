@@ -1,7 +1,6 @@
 interface User {
     name: string;
     email: string;
-    profileImageUrl: string;
 }
 
 export interface Context {

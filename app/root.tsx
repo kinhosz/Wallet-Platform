@@ -1,5 +1,4 @@
-// root.tsx
-import { json, redirect, LoaderFunction } from '@remix-run/node';
+import { redirect, LoaderFunction } from '@remix-run/node';
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react';
 import styles from './tailwind.css?url';
 import GetAuthToken from './services/getAuthToken.server';
