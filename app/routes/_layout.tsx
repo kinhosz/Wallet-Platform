@@ -49,24 +49,17 @@ export default function Index() {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
-  const deleteCookie = (name: string) => {
-    document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-  };
-
-  const handleLogout = () => {
-    const cookieName = 'authToken';
-    deleteCookie(cookieName);
-  };
-
   return (
     <div className="font-bold relative">
       <nav className="bg-wallet_blue text-white">
         <div className="grid grid-cols-3 p-8">
           <div className="flex items-center text-xl text-start">
-            <FiUser
-              className="w-8 h-8 rounded-full mr-2 cursor-pointer bg-white text-wallet_blue p-1"
+            <button
+              className="w-8 h-8 flex items-center justify-center rounded-full mr-2 cursor-pointer bg-white text-wallet_blue p-1"
               onClick={toggleSidebar}
-            />
+            >
+              <FiUser />
+            </button>
             Hello, {context.user.name}!
           </div>
           <div className="text-3xl text-center">Wallet</div>
@@ -89,7 +82,10 @@ export default function Index() {
       </nav>
       {isSidebarOpen && (
         <>
-          <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-40" onClick={toggleSidebar}></div>
+          <button
+            className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-40"
+            onClick={toggleSidebar}
+          ></button>
           <div className="fixed top-0 left-0 h-full w-64 bg-white shadow-lg z-50 flex flex-col justify-between">
             <div className="p-4">
               <h2 className="text-xl font-bold text-blue-600">Hello, {context.user.name}!</h2>
@@ -99,10 +95,10 @@ export default function Index() {
                 </li>
               </ul>
             </div>
-            <div className="p-4 flex items-center justify-between cursor-pointer hover:bg-gray-100" onClick={handleLogout}>
+            <a href="/logout" className="p-4 flex items-center justify-between cursor-pointer hover:bg-gray-100">
               <span className="text-red-600">Logout</span>
               <FiLogOut className="text-red-600" size={20} />
-            </div>
+            </a>
             <button onClick={toggleSidebar} className="absolute top-4 right-4 text-xl">X</button>
           </div>
         </>
