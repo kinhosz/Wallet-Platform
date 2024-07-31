@@ -16,13 +16,17 @@ const RowField: FC<{
     );
 };
 
-const CurrencySelector: React.FC = () => {
+const CurrencySelector: React.FC<{
+    currency: string;
+    saveCurrencyCode: (code: string) => void;
+}> = ({
+    currency,
+    saveCurrencyCode,
+}) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [currency, setCurrency] = useState<string>('BRL');
-
     const handleSelection = (selectedCurrency: string) => {
         setIsModalOpen(false);
-        setCurrency(selectedCurrency);
+        saveCurrencyCode(selectedCurrency);
     }
 
     return (
