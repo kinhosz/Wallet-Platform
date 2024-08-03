@@ -1,18 +1,16 @@
 import { ActionFunctionArgs, createCookie, json, redirect } from '@remix-run/node';
-import { useActionData, Form } from '@remix-run/react';
+import { useActionData, Form, useNavigate } from '@remix-run/react';
 import WarningField from '../components/warning';
 import Base from '../services/base.server';
 
-export const action = async ({ 
-    request 
-}: ActionFunctionArgs) => {
+export const action = async ({ request }: ActionFunctionArgs) => {
     const formData = await request.formData();
     const user = Object.fromEntries(formData);
 
     const response = await Base(
         'login',
         'POST',
-        {'Content-Type': 'application/json'},
+        { 'Content-Type': 'application/json' },
         JSON.stringify({ user: user }),
     );
     if (!response) return redirect('/error');
@@ -28,7 +26,7 @@ export const action = async ({
             secure: true,
             sameSite: 'lax',
             path: '/',
-        })
+        });
 
         return redirect('/overview', {
             headers: {
@@ -36,7 +34,7 @@ export const action = async ({
             },
         });
     } else {
-        const errorMessage = response.status === 401 ? 'Invalid Email Or Password' : 'Unknow Error';
+        const errorMessage = response.status === 401 ? 'Invalid email or password.' : 'Unknown error occurred.';
 
         return json({ error: errorMessage }, { status: response.status });
     }
@@ -44,6 +42,11 @@ export const action = async ({
 
 function Login() {
     const actionData = useActionData<typeof action>();
+    const navigate = useNavigate();
+
+    const handleSignUpClick = () => {
+        navigate('/signup');
+    };
 
     return (
         <div className='bg-wallet_blue w-screen h-screen flex items-center justify-center font-wallet_primary'>
@@ -57,6 +60,14 @@ function Login() {
                         <button type="submit" className='bg-wallet_orange rounded-xl text-bold text-sm text-white py-2 px-8'>
                             Submit
                         </button>
+                    </div>
+                    <div className='flex justify-center'>
+                        <p className='text-white text-sm'>
+                            Don't have an account? Click{' '}
+                            <span onClick={handleSignUpClick} className='font-bold underline text-wallet_orange cursor-pointer'>
+                                here
+                            </span>
+                        </p>
                     </div>
                 </Form>
             </div>

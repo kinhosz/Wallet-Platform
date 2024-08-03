@@ -1,4 +1,4 @@
-import { useActionData, Form } from '@remix-run/react';
+import { useActionData, Form, useNavigate } from '@remix-run/react';
 import { ActionFunctionArgs, json, redirect } from '@remix-run/node';
 import { useState } from 'react';
 import WarningField from '../components/warning';
@@ -13,7 +13,7 @@ export const action = async ({
     const response = await Base(
         'signup',
         'POST',
-        { 'Content-Type': 'application/json'},
+        { 'Content-Type': 'application/json' },
         JSON.stringify({ user: user }),
     );
 
@@ -51,6 +51,10 @@ function Signup() {
     const handleNameChange = (name: string) => {
         setIsValidName(name.length != 0);
     }
+    const navigate = useNavigate();
+    const handleSignUpClick = () => {
+        navigate('/login');
+    };
 
     return (
         <div className='bg-wallet_blue w-screen h-screen flex items-center justify-center font-wallet_primary'>
@@ -67,7 +71,7 @@ function Signup() {
                     />
                     <WarningField
                         condition={!isValidName && isNameOnFocus}
-                        message="Empty name"
+                        message="Name cannot be empty"
                     />
                     <input
                         className={`rounded-xl text-sm p-2 w-full placeholder-text-base ${
@@ -79,7 +83,7 @@ function Signup() {
                     />
                     <WarningField
                         condition={!isValidEmail && isEmailOnFocus}
-                        message="Invalid email"
+                        message="Invalid email address"
                     />
                     <input
                         className={`rounded-xl text-sm p-2 w-full placeholder-text-base ${
@@ -91,7 +95,7 @@ function Signup() {
                     />
                     <WarningField
                         condition={!atLeast6Characters && isPasswordOnFocus}
-                        message="Minimum is 6 characters"
+                        message="Password must be at least 6 characters long"
                     />
                     { data && data.error && (
                         <div className="p-2 text-sm text-red-700 bg-red-100 rounded-lg" role="alert">
@@ -110,6 +114,14 @@ function Signup() {
                         >
                             Submit
                         </button>
+                    </div>
+                    <div className='flex justify-center'>
+                        <p className='text-white text-sm'>
+                            Already have an account? Click{' '}
+                            <span onClick={handleSignUpClick} className='font-bold underline text-wallet_orange cursor-pointer'>
+                                here
+                            </span>
+                        </p>
                     </div>
                 </Form>
             </div>
