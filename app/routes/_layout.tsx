@@ -26,7 +26,7 @@ export async function loader({ request }: ActionFunctionArgs) {
   );
   if (!response) return redirect('/error');
 
-  if (!response.ok) return redirect('/login');
+  if (!response.ok) return redirect('/logout');
 
   const user = await response.json();
   const context: Context = {
