@@ -1,8 +1,17 @@
 import { useActionData, Form, useNavigate } from '@remix-run/react';
-import { ActionFunctionArgs, json, redirect } from '@remix-run/node';
+import { ActionFunctionArgs, json, LoaderFunction, redirect } from '@remix-run/node';
 import { useState } from 'react';
 import WarningField from '../components/warning';
 import Base from '../services/base.server';
+import GetAuthToken from '~/services/getAuthToken.server';
+
+export const loader: LoaderFunction = async ({ request }) => {
+    const token = await GetAuthToken(request);
+    if (token) {
+      return redirect('/overview');
+    }
+    return null;
+};
 
 export const action = async ({
     request,
@@ -118,9 +127,9 @@ function Signup() {
                     <div className='flex justify-center'>
                         <p className='text-white text-sm'>
                             Already have an account? Click{' '}
-                            <span onClick={handleSignUpClick} className='font-bold underline text-wallet_orange cursor-pointer'>
+                            <button onClick={handleSignUpClick} className='font-bold underline text-wallet_orange cursor-pointer'>
                                 here
-                            </span>
+                            </button>
                         </p>
                     </div>
                 </Form>

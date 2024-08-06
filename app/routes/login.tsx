@@ -1,7 +1,16 @@
-import { ActionFunctionArgs, createCookie, json, redirect } from '@remix-run/node';
+import { ActionFunctionArgs, createCookie, json, LoaderFunction, redirect } from '@remix-run/node';
 import { useActionData, Form, useNavigate } from '@remix-run/react';
 import WarningField from '../components/warning';
 import Base from '../services/base.server';
+import GetAuthToken from '~/services/getAuthToken.server';
+
+export const loader: LoaderFunction = async ({ request }) => {
+    const token = await GetAuthToken(request);
+    if (token) {
+      return redirect('/overview');
+    }
+    return null;
+};
 
 export const action = async ({ request }: ActionFunctionArgs) => {
     const formData = await request.formData();
@@ -63,10 +72,10 @@ function Login() {
                     </div>
                     <div className='flex justify-center'>
                         <p className='text-white text-sm'>
-                            Don't have an account? Click{' '}
-                            <span onClick={handleSignUpClick} className='font-bold underline text-wallet_orange cursor-pointer'>
+                            Don&apos;t have an account? Click{' '}
+                            <button onClick={handleSignUpClick} className='font-bold underline text-wallet_orange cursor-pointer'>
                                 here
-                            </span>
+                            </button>
                         </p>
                     </div>
                 </Form>
