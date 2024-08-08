@@ -26,7 +26,7 @@ export async function loader({ request }: ActionFunctionArgs) {
   );
   if (!response) return redirect('/error');
 
-  if (!response.ok) return redirect('/login');
+  if (!response.ok) return redirect('/logout');
 
   const user = await response.json();
   const context: Context = {
@@ -59,7 +59,7 @@ export default function Layout() {
   return (
     <UserContext.Provider value={context.user}>
       <CurrencyContext.Provider value={currencyCode}>
-        <div className="font-bold relative">
+        <div className="font-semibold relative">
           <nav className="bg-wallet_blue text-white">
             <div className="grid grid-cols-3 p-8">
               <div className="flex items-center text-xl text-start">
