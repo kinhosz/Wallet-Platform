@@ -32,7 +32,7 @@ const CurrencySelector: React.FC<{
     return (
         <div className="relative">
             <button 
-                className={`text-xl p-2 rounded-xl grid grid-cols-3 border border-black
+                className={`text-lg p-2 rounded-xl grid grid-cols-3 border border-black
                     shadow-lg hover:bg-wallet_orange_dark active:shadow-inner active:border-white
                     ${isModalOpen ? 'shadow-inner bg-wallet_orange_dark' : 'bg-wallet_orange'}`}
                 onClick={() => setIsModalOpen(!isModalOpen)}
@@ -45,7 +45,7 @@ const CurrencySelector: React.FC<{
                 { isModalOpen ? <MdKeyboardArrowDown size={26} color="white" /> : <MdChevronRight size={26} color="white" /> }
             </button>
             { isModalOpen ? (
-                <div className="absolute top-14 right-0 bg-wallet_gray rounded-xl text-black">
+                <div className="absolute top-14 right-0 bg-wallet_gray rounded-xl text-black z-40">
                     <p className="text-center mb-4">Select your currency</p>
                     <RowField onClick={() => handleSelection('BRL')} currency={'BRL'}>
                         <BR title="Brazilian Real" className="rounded-full w-14" />
