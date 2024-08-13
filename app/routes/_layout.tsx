@@ -60,18 +60,18 @@ export default function Layout() {
     <UserContext.Provider value={context.user}>
       <CurrencyContext.Provider value={currencyCode}>
         <div className="font-semibold relative">
-          <nav className="sticky top-0 left-0 right-0 z-10 bg-wallet_blue text-white">
-            <div className="grid grid-cols-3 p-8">
-              <div className="flex items-center text-lg text-start">
+          <nav className="sticky top-0 left-0 right-0 z-20 bg-wallet_blue text-white">
+            <div className="flex justify-between px-4 py-8 items-center">
+              <div className="flex text-start">
                 <button
                   className="w-8 h-8 flex items-center justify-center rounded-full mr-2 cursor-pointer bg-white text-wallet_blue p-1"
                   onClick={toggleSidebar}
                 >
                   <FiUser />
                 </button>
-                Hello, {context.user.name}!
+                <p className="hidden sm:block">Hello, {context.user.name}!</p>
               </div>
-              <div className="text-2xl text-center">Wallet</div>
+              <div className="flex-1 text-2xl text-center">Wallet</div>
               <div className="flex ml-auto">
                 <CurrencySelector currency={currencyCode} saveCurrencyCode={saveCurrencyCode} />
               </div>
