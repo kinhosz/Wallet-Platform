@@ -24,7 +24,7 @@ const Monetary: React.FC<{
     const finalValue = Math.abs(value).toFixed(2);
 
     return (
-        <div className={`font-sans text-sm ${ negative ? 'text-wallet_red': 'text-black'} ${className}`}>
+        <div className={`font-sans ${ negative ? 'text-wallet_red': 'text-black'} ${className}`}>
             <MonetarySymbol />{' '}{finalValue}
         </div>
     );

@@ -59,10 +59,10 @@ export default function Layout() {
   return (
     <UserContext.Provider value={context.user}>
       <CurrencyContext.Provider value={currencyCode}>
-        <div className="font-bold relative">
-          <nav className="bg-wallet_blue text-white">
+        <div className="font-semibold relative">
+          <nav className="sticky top-0 left-0 right-0 z-10 bg-wallet_blue text-white">
             <div className="grid grid-cols-3 p-8">
-              <div className="flex items-center text-xl text-start">
+              <div className="flex items-center text-lg text-start">
                 <button
                   className="w-8 h-8 flex items-center justify-center rounded-full mr-2 cursor-pointer bg-white text-wallet_blue p-1"
                   onClick={toggleSidebar}
@@ -71,24 +71,25 @@ export default function Layout() {
                 </button>
                 Hello, {context.user.name}!
               </div>
-              <div className="text-3xl text-center">Wallet</div>
+              <div className="text-2xl text-center">Wallet</div>
               <div className="flex ml-auto">
                 <CurrencySelector currency={currencyCode} saveCurrencyCode={saveCurrencyCode} />
               </div>
             </div>
-            <div className="flex mt-8">
+            <div className="flex mt-2">
               <TabSheet active={activePath == 'transactions'} title={'Transactions'} to={'/transactions'} />
               <TabSheet active={activePath == 'overview'} title={'Overview'} to={'/overview'} />
               <TabSheet active={activePath == 'planning'} title={'Planning'} to={'/planning'} />
               <TabSheet active={activePath == 'charts'} title={'Charts'} to={'/charts'} />
             </div>
+            <div className="bg-white h-2" />
           </nav>
           <Sidebar
             isOpen={isSidebarOpen}
             toggleSidebar={toggleSidebar}
             userName={context.user.name}
           />
-          <main className={isSidebarOpen ? 'filter blur-sm' : ''}>
+          <main className={isSidebarOpen ? 'filter blur-sm mt-16' : ''}>
             <Outlet />
           </main>
         </div>

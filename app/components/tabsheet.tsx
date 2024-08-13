@@ -11,7 +11,8 @@ const TabSheet: React.FC<{
     to,
 }) => {
     return (
-        <Link to={to} className={`w-32 h-10 text-center border-black rounded-t-xl flex items-center justify-center ${
+        <Link to={to} className={`w-28 h-8 text-sm text-center border-black rounded-t-xl
+            truncate overflow-hidden whitespace-nowrap p-2 ${
             active ? 'bg-white text-wallet_orange border-t border-r border-l'
                 : `bg-wallet_orange text-white border hover:shadow-2xl hover:bg-wallet_orange_dark
                     active:shadow-inner active:border-white`
