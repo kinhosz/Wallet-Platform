@@ -1,3 +1,4 @@
+import { Form } from '@remix-run/react';
 import { BR, EU, GB, US } from 'country-flag-icons/react/3x2';
 import React, { FC, ReactNode, useState } from 'react';
 import { MdChevronRight, MdKeyboardArrowDown } from 'react-icons/md';
@@ -9,7 +10,7 @@ const RowField: FC<{
 }> = ({ children, onClick, currency }) => {
     return (
         <button className="grid grid-cols-2 border border-black bg-white rounded-xl mx-1 place-items-center"
-            onClick={onClick}>
+            type="submit" name="currency" value={currency} onClick={onClick}>
             {children}
             <div className="text-xl p-4">{currency}</div>
         </button>
@@ -25,8 +26,8 @@ const CurrencySelector: React.FC<{
 }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const handleSelection = (selectedCurrency: string) => {
-        setIsModalOpen(false);
         saveCurrencyCode(selectedCurrency);
+        setTimeout(() => setIsModalOpen(false), 500);
     }
 
     return (
@@ -45,7 +46,7 @@ const CurrencySelector: React.FC<{
                 { isModalOpen ? <MdKeyboardArrowDown size={26} color="white" /> : <MdChevronRight size={26} color="white" /> }
             </button>
             { isModalOpen ? (
-                <div className="absolute top-14 right-0 bg-wallet_gray rounded-xl -ml-12 sm:ml-0 text-black z-40">
+                <Form method="post" action="/currency" className="absolute top-14 right-0 bg-wallet_gray rounded-xl -ml-12 sm:ml-0 text-black z-40">
                     <p className="text-center mb-4">Select your currency</p>
                     <RowField onClick={() => handleSelection('BRL')} currency={'BRL'}>
                         <BR title="Brazilian Real" className="rounded-full w-12" />
@@ -59,7 +60,7 @@ const CurrencySelector: React.FC<{
                     <RowField onClick={() => handleSelection('USD')} currency={'USD'}>
                         <US title="United States Dollar" className="rounded-full w-12" />
                     </RowField>
-                </div>
+                </Form>
             ) : null}
         </div>
     );
