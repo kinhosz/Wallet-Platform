@@ -1,4 +1,4 @@
-export default async function Base(
+export default async function ApiRequest(
     url: string,
     method: string,
     headers: Record<string, string>,
