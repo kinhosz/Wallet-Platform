@@ -2,7 +2,7 @@ import { useActionData, Form, useNavigate } from '@remix-run/react';
 import { ActionFunctionArgs, json, LoaderFunction, redirect } from '@remix-run/node';
 import { useState } from 'react';
 import WarningField from '../components/warning';
-import Base from '../services/base.server';
+import ApiRequest from '../services/apiRequest.server';
 import GetAuthToken from '~/services/getAuthToken.server';
 
 export const loader: LoaderFunction = async ({ request }) => {
@@ -19,7 +19,7 @@ export const action = async ({
     const formData = await request.formData();
     const user = Object.fromEntries(formData);
 
-    const response = await Base(
+    const response = await ApiRequest(
         'signup',
         'POST',
         { 'Content-Type': 'application/json' },

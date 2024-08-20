@@ -1,5 +1,5 @@
 import { redirect, ActionFunctionArgs } from "@remix-run/node";
-import Base from "../services/base.server";
+import ApiRequest from "../services/apiRequest.server";
 import GetAuthToken from "~/services/getAuthToken.server";
 import { Outlet, useLoaderData, useLocation } from "@remix-run/react";
 import { Context } from "~/types/context";
@@ -16,7 +16,7 @@ export async function loader({ request }: ActionFunctionArgs) {
 
   if (!token) return redirect('/login');
 
-  const response = await Base(
+  const response = await ApiRequest(
     'users/show',
     'GET',
     {
