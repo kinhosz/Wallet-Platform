@@ -3,6 +3,8 @@ import Monetary from "../monetary";
 import SecondaryButton from "../secondaryButton";
 import PieChart from "./pieChart";
 import PlanningBarChart from "./planningBarChart";
+import { useState } from "react";
+import Modal from "../modal";
 
 interface TableProps {
     categories: Category[];
@@ -10,15 +12,21 @@ interface TableProps {
 }
 
 export default function TableComponent({ categories, isIncome=false }: TableProps) {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
     const title = isIncome ? 'Incomes' : 'Expenses';
     const mult = isIncome ? -1 : 1;
+
     return (
         <div className="xl:w-screen">
+            { isModalOpen && (
+                <Modal onClose={() => setIsModalOpen(false)} />
+            )}
             <div className="flex flex-col items-center m-4 xl:flex-shrink-0">
                 <div className="max-w-lg mx-2">
                     <div className="flex justify-between mr-2">
                         <div className="text-bold text-lg font-bold">{title}</div>
-                        <SecondaryButton onClick={()=>{}}>
+                        <SecondaryButton onClick={()=>setIsModalOpen(true)}>
                             Add new category
                         </SecondaryButton>
                     </div>
