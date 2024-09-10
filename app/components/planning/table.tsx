@@ -4,7 +4,7 @@ import SecondaryButton from "../secondaryButton";
 import PieChart from "./pieChart";
 import PlanningBarChart from "./planningBarChart";
 import { useState } from "react";
-import Modal from "../modal";
+import AddCategoryModal from "../modal/addCategory";
 
 interface TableProps {
     categories: Category[];
@@ -20,14 +20,14 @@ export default function TableComponent({ categories, isIncome=false }: TableProp
     return (
         <div className="xl:w-screen">
             { isModalOpen && (
-                <Modal onClose={() => setIsModalOpen(false)} />
+                <AddCategoryModal onClose={() => setIsModalOpen(false)} />
             )}
             <div className="flex flex-col items-center m-4 xl:flex-shrink-0">
                 <div className="max-w-lg mx-2">
                     <div className="flex justify-between mr-2">
                         <div className="text-bold text-lg font-bold">{title}</div>
                         <SecondaryButton onClick={()=>setIsModalOpen(true)}>
-                            Add new category
+                            Add category
                         </SecondaryButton>
                     </div>
                     <PlanningBarChart
