@@ -3,9 +3,9 @@ import { MdAdd, MdSave } from 'react-icons/md';
 import { TbEdit } from "react-icons/tb";
 import Monetary from "../monetary";
 
-const TransactionRow = ({ category, description, value, onSave, onCancel }) => {
+const TransactionRow = ({ description, value, category_name, onSave, onCancel }) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [editedCategory, setEditedCategory] = useState(category);
+  const [editedCategory, setEditedCategory] = useState(category_name);
   const [editedDescription, setEditedDescription] = useState(description);
   const [editedValue, setEditedValue] = useState(value);
 
@@ -16,7 +16,7 @@ const TransactionRow = ({ category, description, value, onSave, onCancel }) => {
     setIsEditing(false);
   };
 
-  const handleClickOutside = (event: { target: any; }) => {
+  const handleClickOutside = (event) => {
     if (rowRef.current && !rowRef.current.contains(event.target)) {
       setIsEditing(false);
       onCancel();
@@ -46,7 +46,7 @@ const TransactionRow = ({ category, description, value, onSave, onCancel }) => {
             className="border p-1 rounded w-full max-w-[150px]"
           />
         ) : (
-          category
+          category_name
         )}
       </td>
       <td className="px-4 py-2">
@@ -105,22 +105,17 @@ const TransactionTable = ({ transactions, buttonClicked }) => {
     setShowPopup(false);
   };
 
-  const handleSaveTransaction = (catIndex: any, transIndex: any, newCategory: any, newDescription: any, newValue: any) => {
-    const updatedTransactions = transactions.map((category: { transactions: any[]; }, cIndex: any) => {
-      if (cIndex === catIndex) {
-        const updatedTransaction = category.transactions.map((transaction: any, tIndex: any) => {
-          if (tIndex === transIndex) {
-            return {
-              ...transaction,
-              description: newDescription,
-              value: newValue
-            };
-          }
-          return transaction;
-        });
-        return { ...category, category: newCategory, transactions: updatedTransaction };
+  const handleSaveTransaction = (transIndex, newCategory, newDescription, newValue) => {
+    const updatedTransactions = transactions.map((transaction, tIndex) => {
+      if (tIndex === transIndex) {
+        return {
+          ...transaction,
+          category_name: newCategory,
+          description: newDescription,
+          value: newValue
+        };
       }
-      return category;
+      return transaction;
     });
 
     console.log("Transações atualizadas:", updatedTransactions);
@@ -145,19 +140,18 @@ const TransactionTable = ({ transactions, buttonClicked }) => {
           </tr>
         </thead>
         <tbody>
-          {transactions.map((category: { transactions: any[]; category: any; }, catIndex: any) => (
-            category.transactions.map((transaction: { description: any; value: any; }, transIndex: any) => (
-              <TransactionRow
-                key={`${catIndex}-${transIndex}`}
-                category={category.category}
-                description={transaction.description}
-                value={transaction.value}
-                onSave={(newCategory: any, newDescription: any, newValue: any) =>
-                  handleSaveTransaction(catIndex, transIndex, newCategory, newDescription, newValue)
-                }
-                onCancel={() => console.log("Edição cancelada")}
-              />
-            ))
+          {transactions.map((transaction, transIndex) => (
+            <TransactionRow
+              key={transIndex}
+              occurred_at={transaction.occurred_at}
+              category_name={transaction.category_name}
+              description={transaction.description}
+              value={transaction.value}
+              onSave={(newCategory, newDescription, newValue) =>
+                handleSaveTransaction(transIndex, newCategory, newDescription, newValue)
+              }
+              onCancel={() => console.log("Edição cancelada")}
+            />
           ))}
         </tbody>
       </table>
