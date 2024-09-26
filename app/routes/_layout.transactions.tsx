@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Chart } from "react-google-charts";
 import "react-datepicker/dist/react-datepicker.css";
-import DateNavigator from '~/components/transactions/dateNavigator';
+import DateNavigator from "~/components/transactions/dateNavigator";
 import TransactionTable from "~/components/transactions/transactionTable";
-import Monetary from '~/components/monetary';
+import Monetary from "~/components/monetary";
 import { LoaderFunction, useLoaderData, useFetcher } from "@remix-run/react";
 import GetAuthToken from "~/services/getAuthToken.server";
 import GetTransactionsByDate from "~/services/getTransactionByDate.server";
@@ -16,14 +16,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   return transactions;
 };
 
-const generateRandomColor = () => {
-  const letters = '0123456789ABCDEF';
-  let color = '#';
-  for (let i = 0; i < 6; i++) {
-    color += letters[Math.floor(Math.random() * 16)];
-  }
-  return color;
-};
+const COLORS = ['#FF5733', '#33FF57', '#3357FF', '#F1C40F', '#9B59B6', '#1ABC9C', '#E74C3C', '#34495E', '#E67E22', '#2ECC71'];
 
 const sumByCategory = (transactions) => {
   const categoryMap = new Map();
@@ -57,10 +50,9 @@ export default function Transactions() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [buttonClicked, setButtonClicked] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("");
-  const [selectedColor, setSelectedColor] = useState("#FFFFFF");
+  const [selectedColor, setSelectedColor] = useState(COLORS[0]);
   const [categoryTransactions, setCategoryTransactions] = useState([]);
-  const [categoryColorMap, setCategoryColorMap] = useState({});
-
+  
   useEffect(() => {
     const formattedDate = currentDate.toISOString().split('T')[0]; // YYYY-MM-DD
     fetcher.load(`/transactions?date=${formattedDate}`);
@@ -70,10 +62,9 @@ export default function Transactions() {
     const sortedData = sumByCategory(fetcher.data || transactions);
 
     const colorMap = {};
-    sortedData.forEach(([category]) => {
-      colorMap[category] = generateRandomColor();
+    sortedData.forEach((_, index) => {
+      colorMap[sortedData[index][0]] = COLORS[index % COLORS.length];
     });
-    setCategoryColorMap(colorMap);
 
     const formattedData = [["Category", "Value"], ...sortedData.map(([category, value]) => [category, value])];
     setChartData(formattedData);
@@ -81,7 +72,7 @@ export default function Transactions() {
     if (sortedData.length > 0) {
       const initialCategory = sortedData[0][0];
       setSelectedCategory(initialCategory);
-      setSelectedColor(colorMap[initialCategory] || "#FFFFFF");
+      setSelectedColor(colorMap[initialCategory]);
       const filteredTransactions = (fetcher.data || transactions).filter(transaction => transaction.category_name === initialCategory);
       setCategoryTransactions(filteredTransactions);
     }
@@ -106,7 +97,7 @@ export default function Transactions() {
       const selectedRow = selection[0].row;
       const category = chartData[selectedRow + 1][0];
       setSelectedCategory(category);
-      setSelectedColor(categoryColorMap[category] || "#FFFFFF");
+      setSelectedColor(COLORS[selectedRow % COLORS.length]);
       const filteredTransactions = (fetcher.data || transactions).filter(transaction => transaction.category_name === category);
       setCategoryTransactions(filteredTransactions);
     }
@@ -140,7 +131,7 @@ export default function Transactions() {
               is3D: false,
               legend: { position: 'left' },
               slices: chartData.slice(1).reduce((acc, [category], index) => {
-                acc[index] = { color: categoryColorMap[category] || "#000000" };
+                acc[index] = { color: COLORS[index % COLORS.length] };
                 return acc;
               }, {}),
             }}

@@ -1,9 +1,9 @@
 import ApiRequest from "./apiRequest.server";
 import { Transaction } from "~/types/transactions";
 
-export default async function GetTransactionsByDate(token: string, startDate: string): Promise<Transaction[]> {
+export default async function GetTransactionsByDate(token: string, date: string): Promise<Transaction[]> {
   const response = await ApiRequest(
-    `finance/transactions/filter_by_date?start_date=${startDate}`,
+    `finance/transactions/filter_by_date?date=${date}`,
     'GET', { 'Content-Type': 'application/json', 'Authorization': token, },
   );
 
