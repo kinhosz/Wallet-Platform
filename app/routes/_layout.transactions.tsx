@@ -4,27 +4,34 @@ import "react-datepicker/dist/react-datepicker.css";
 
 import DateNavigator from '~/components/transactions/dateNavigator';
 import TransactionTable from "~/components/transactions/transactionTable";
-import Monetary from '~/components/monetary'
+import Monetary from '~/components/monetary';
+
+const generateRandomColor = () => {
+  const letters = '0123456789ABCDEF';
+  let color = '#';
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+};
 
 const sumByCategory = (transactions) => {
   const categoryMap = new Map();
 
-  transactions.forEach(({ category, color, transactions: transactionList }) => {
-    transactionList.forEach(({ value }) => {
-      if (value < 0) {
-        const numericValue = Math.abs(value);
-        if (categoryMap.has(category)) {
-          const existing = categoryMap.get(category);
-          categoryMap.set(category, { value: existing.value + numericValue, color: existing.color });
-        } else {
-          categoryMap.set(category, { value: numericValue, color });
-        }
+  transactions.forEach(({ category_name, value }) => {
+    const numericValue = parseFloat(value);
+    if (numericValue < 0) { // Considerando apenas outflows
+      const absValue = Math.abs(numericValue);
+      if (categoryMap.has(category_name)) {
+        const existing = categoryMap.get(category_name);
+        categoryMap.set(category_name, { value: existing.value + absValue });
+      } else {
+        categoryMap.set(category_name, { value: absValue });
       }
-    });
+    }
   });
 
-  // Convert map to array and sort by value in descending order
-  const sortedCategories = Array.from(categoryMap, ([category, { value, color }]) => [category, value, color])
+  const sortedCategories = Array.from(categoryMap, ([category, { value }]) => [category, value])
     .sort((a, b) => b[1] - a[1]);
 
   return sortedCategories;
@@ -39,8 +46,9 @@ export default function Transactions() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [buttonClicked, setButtonClicked] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("");
-  const [selectedColor, setSelectedColor] = useState("#FFFFFF");
+  const [selectedColor, setSelectedColor] = useState("#FFFFFF"); // Cor inicial
   const [categoryTransactions, setCategoryTransactions] = useState([]);
+  const [categoryColorMap, setCategoryColorMap] = useState({});
 
   const addNewTransaction = () => {
     setButtonClicked(true);
@@ -48,97 +56,70 @@ export default function Transactions() {
       setButtonClicked(false);
     }, 100);
 
-    const newTransaction = { category: "", description: "", value: 0, color: "#FFFFFF" };
+    const newTransaction = { category: "", description: "", value: 0 };
     setTransactions([...transactions, newTransaction]);
   };
 
   useEffect(() => {
     const mockTransactions = [
       {
-        category: "Food",
-        color: "#FF5733",
-        transactions: [
-          { description: "Weekly groceries", value: -250, date: "2024-09-16"},
-          { description: "Lunch", value: -50, date: "2024-09-17"},
-        ],
+        "description": "credit card",
+        "occurred_at": "2024-01-14",
+        "value": "-150.0",
+        "category_name": "credit card"
       },
       {
-        category: "Education",
-        color: "#C70039",
-        transactions: [
-          { description: "AutoCAD course", value: -250, date: "2024-09-15" },
-          { description: "English course", value: -40, date: "2024-09-17" },
-        ],
+        "description": "credit card 5",
+        "occurred_at": "2024-05-17",
+        "value": "-150.0",
+        "category_name": "food"
       },
       {
-        category: "Transport",
-        color: "#900C3F",
-        transactions: [{ description: "Taxi", value: -30, date: "2024-09-17" }],
+        "description": "bolo de chocolate",
+        "occurred_at": "2024-05-13",
+        "value": "-134.0",
+        "category_name": "food"
       },
       {
-        category: "Health",
-        color: "#581845",
-        transactions: [{ description: "Medication", value: -20, date: "2024-09-16" }],
-      },
-      {
-        category: "Leisure",
-        color: "#FF9D00",
-        transactions: [{ description: "Cinema", value: -60, date: "2024-09-16" }],
-      },
-      {
-        category: "Salary",
-        color: "#2CA02C",
-        transactions: [{ description: "Uber reimbursement", value: 25, date: "2024-09-16"}],
-      },
+        "description": "novo pc",
+        "occurred_at": "2024-09-26",
+        "value": "3000.0",
+        "category_name": "credit card"
+      }
     ];
     setTransactions(mockTransactions);
 
     const sortedData = sumByCategory(mockTransactions);
+
+    const colorMap = {};
+    sortedData.forEach(([category]) => {
+      colorMap[category] = generateRandomColor();
+    });
+    setCategoryColorMap(colorMap);
+
     const formattedData = [["Category", "Value"], ...sortedData.map(([category, value]) => [category, value])];
     setChartData(formattedData);
 
-    const inflowsSum = mockTransactions.reduce((acc, { transactions: transList }) => {
-      return acc + transList.reduce((sum, trans) => trans.value > 0 ? sum + parseFloat(trans.value) : sum, 0);
+    if (sortedData.length > 0) {
+      const initialCategory = sortedData[0][0];
+      setSelectedCategory(initialCategory);
+      setSelectedColor(colorMap[initialCategory] || "#FFFFFF");
+      const filteredTransactions = mockTransactions.filter(transaction => transaction.category_name === initialCategory);
+      setCategoryTransactions(filteredTransactions);
+    }
+
+    const inflowsSum = mockTransactions.reduce((acc, trans) => {
+      return acc + (parseFloat(trans.value) > 0 ? parseFloat(trans.value) : 0);
     }, 0);
 
-    const outflowsSum = mockTransactions.reduce((acc, { transactions: transList }) => {
-      return acc + transList.reduce((sum, trans) => trans.value < 0 ? sum + parseFloat(trans.value) : sum, 0);
+    const outflowsSum = mockTransactions.reduce((acc, trans) => {
+      return acc + (parseFloat(trans.value) < 0 ? parseFloat(trans.value) : 0);
     }, 0);
 
     setInflows(<Monetary value={inflowsSum.toFixed(2)} />);
-    setOutflows(<Monetary value={outflowsSum.toFixed(2)} />);
+    setOutflows(<Monetary value={Math.abs(outflowsSum).toFixed(2)} />);
     setDailyBalance(<Monetary value={(inflowsSum + outflowsSum).toFixed(2)} />);
   }, []);
-
-  useEffect(() => {
-    if (transactions.length > 0) {
-      const maxNegativeCategory = transactions.reduce((max, category) => {
-        const maxNegativeTransaction = category.transactions.reduce((max, current) => {
-          return current.value < 0 && (max === null || current.value < max.value) ? current : max;
-        }, null);
-        if (maxNegativeTransaction) {
-          return !max || (maxNegativeTransaction.value < max.value) ? { category: category.category, color: category.color } : max;
-        }
-        return max;
-      }, null);
-
-      if (maxNegativeCategory) {
-        setSelectedCategory(maxNegativeCategory.category);
-        setSelectedColor(maxNegativeCategory.color);
-        const category = transactions.find(transaction => transaction.category === maxNegativeCategory.category);
-        if (category) {
-          const maxNegativeTransaction = category.transactions.reduce((max, current) => {
-            return current.value < 0 && (max === null || current.value < max.value) ? current : max;
-          }, null);
-          if (maxNegativeTransaction) {
-            setCategoryTransactions([maxNegativeTransaction]);
-          } else {
-            setCategoryTransactions([]);
-          }
-        }
-      }
-    }
-  }, [transactions]);
 
   const handleChartSelect = ({ chartWrapper }) => {
     const chart = chartWrapper.getChart();
@@ -147,8 +128,9 @@ export default function Transactions() {
       const selectedRow = selection[0].row;
       const category = chartData[selectedRow + 1][0];
       setSelectedCategory(category);
-      const color = transactions.find(transaction => transaction.category === category)?.color || "#FFFFFF";
-      setSelectedColor(color);
+      setSelectedColor(categoryColorMap[category] || "#FFFFFF");
+      const filteredTransactions = transactions.filter(transaction => transaction.category_name === category);
+      setCategoryTransactions(filteredTransactions);
     }
   };
 
@@ -156,7 +138,7 @@ export default function Transactions() {
     <div className="p-4 flex flex-wrap justify-between">
       <div className="w-full lg:w-1/2 mb-6">
         <DateNavigator currentDate={currentDate} setCurrentDate={setCurrentDate} />
-        <TransactionTable transactions={transactions} addNewTransaction={addNewTransaction} buttonClicked={buttonClicked}/>
+        <TransactionTable transactions={transactions} addNewTransaction={addNewTransaction} buttonClicked={buttonClicked} />
       </div>
 
       <div className="w-full lg:w-1/2 lg:sticky lg:top-0 h-screen flex flex-col flex-grow">
@@ -169,8 +151,8 @@ export default function Transactions() {
               pieHole: 0.4,
               is3D: false,
               legend: { position: 'left' },
-              slices: chartData.slice(1).reduce((acc, _, index) => {
-                acc[index] = { color: transactions.find(transaction => transaction.category === chartData[index + 1][0])?.color || "#000000" };
+              slices: chartData.slice(1).reduce((acc, [category], index) => {
+                acc[index] = { color: categoryColorMap[category] || "#000000" };
                 return acc;
               }, {}),
             }}
@@ -195,7 +177,10 @@ export default function Transactions() {
             </div>
           </div>
           <div className="mt-6 grid grid-cols-1 w-1/2">
-            <div className="p-4 rounded shadow-md" style={{ backgroundColor: selectedColor }}>
+            <div 
+              className="p-4 rounded shadow-md border-8" 
+              style={{ borderColor: selectedColor }}
+            >
               <h4 className="font-bold">{selectedCategory}</h4>
               {categoryTransactions.length > 0 ? (
                 categoryTransactions.map((transaction, index) => (
