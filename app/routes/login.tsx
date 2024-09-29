@@ -1,13 +1,14 @@
 import { ActionFunctionArgs, createCookie, json, LoaderFunction, redirect } from '@remix-run/node';
 import { useActionData, Form, useNavigate } from '@remix-run/react';
+import { useEffect } from 'react'; // Certifique-se de importar o useEffect
 import WarningField from '../components/warning';
 import ApiRequest from '../services/apiRequest.server';
-import GetAuthToken from '~/services/getAuthToken.server';
+import GetAuthToken from '../services/getAuthToken.server';
 
 export const loader: LoaderFunction = async ({ request }) => {
     const token = await GetAuthToken(request);
     if (token) {
-      return redirect('/overview');
+        return redirect('/overview');
     }
     return null;
 };
@@ -22,6 +23,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
         { 'Content-Type': 'application/json' },
         JSON.stringify({ user: user }),
     );
+
     if (!response) return redirect('/error');
 
     if (response.ok) {
@@ -56,6 +58,12 @@ function Login() {
     const handleSignUpClick = () => {
         navigate('/signup');
     };
+
+    useEffect(() => {
+        if (actionData?.token) {
+            localStorage.setItem('authToken', actionData.token);
+        }
+    }, [actionData]);
 
     return (
         <div className='bg-wallet_blue w-screen h-screen flex items-center justify-center font-wallet_primary'>
