@@ -3,13 +3,14 @@ import Monetary from "../monetary";
 import SecondaryButton from "../secondaryButton";
 import PieChart from "./pieChart";
 import PlanningBarChart from "./planningBarChart";
+import { PlanningLine } from "~/types/planning_line";
 
 interface TableProps {
-    categories: Category[];
+    planningLines: PlanningLine[];
     isIncome?: boolean;
 }
 
-export default function TableComponent({ categories, isIncome=false }: TableProps) {
+export default function TableComponent({ planningLines, isIncome=false }: TableProps) {
     const title = isIncome ? 'Incomes' : 'Expenses';
     const mult = isIncome ? -1 : 1;
     return (
@@ -23,8 +24,8 @@ export default function TableComponent({ categories, isIncome=false }: TableProp
                         </SecondaryButton>
                     </div>
                     <PlanningBarChart
-                        planned={categories.reduce((total, category) => total + category.planned, 0)}
-                        real={categories.reduce((total, category) => total + category.real, 0)}
+                        planned={planningLines.reduce((total, line) => total + line.planned, 0)}
+                        real={planningLines.reduce((total, line) => total + line.real, 0)}
                     />
                     <div className="p-2 mx-2">
                         {/* HEAD */}
@@ -35,7 +36,7 @@ export default function TableComponent({ categories, isIncome=false }: TableProp
                             <span>Difference</span>
                         </div>
                         {/* BODY */}
-                        { categories.map((item, index) => (
+                        { planningLines.map((item, index) => (
                             <div key={index} className="col-span-4 grid grid-cols-4 text-sm border">
                                 <button
                                     className="col-span-2 grid grid-cols-2 bg-wallet_gray rounded-full border
@@ -43,7 +44,7 @@ export default function TableComponent({ categories, isIncome=false }: TableProp
                                     onClick={()=>{}}
                                 >
                                     <div className="col-span-1 px-2 truncate overflow-hidden whitespace-nowrap max-w-32 text-start text-xs xl:text-sm">
-                                        {item.title}
+                                        {item.category.name}
                                     </div>
                                     <div className="flex xl:justify-between px-2">
                                         <Monetary value={item.planned} className="px-2 text-xs xl:text-sm whitespace-nowrap"/>
@@ -56,7 +57,7 @@ export default function TableComponent({ categories, isIncome=false }: TableProp
                         ))}
                     </div>
                 </div>
-                <PieChart className="w-screen xl:w-auto" categories={categories} />
+                <PieChart className="w-screen xl:w-auto" planningLines={planningLines} />
             </div>
         </div>
     );

@@ -1,10 +1,11 @@
-import { Category } from "./category";
+import { PlanningLine } from "./planning_line";
 
-export interface PeriodSummary {
+export interface Planning {
+    uuid: string;
     initial_balance: number;
     final_balance: number;
     startDate: string;
     endDate: string;
-    expense: Category[];
-    income: Category[];
+    expense: PlanningLine[];
+    income: PlanningLine[];
 }
