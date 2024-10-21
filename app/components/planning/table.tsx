@@ -1,26 +1,41 @@
 import { Category } from "~/types/category";
+import AddCategoryModal from "../modal/addCategory";
 import Monetary from "../monetary";
 import SecondaryButton from "../secondaryButton";
 import PieChart from "./pieChart";
 import PlanningBarChart from "./planningBarChart";
+import { useState } from "react";
 import { PlanningLine } from "~/types/planning_line";
 
 interface TableProps {
     planningLines: PlanningLine[];
     isIncome?: boolean;
+    allCategories: Category[];
+    planningUuid: string;
 }
 
-export default function TableComponent({ planningLines, isIncome=false }: TableProps) {
+export default function TableComponent({ planningLines, isIncome=false, allCategories, planningUuid }: TableProps) {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
     const title = isIncome ? 'Incomes' : 'Expenses';
     const mult = isIncome ? -1 : 1;
+
     return (
         <div className="xl:w-screen">
+            { isModalOpen && (
+                <AddCategoryModal
+                    onClose={() => setIsModalOpen(false)}
+                    isIncome={isIncome}
+                    categories={allCategories}
+                    planning={planningUuid}
+                />
+            )}
             <div className="flex flex-col items-center m-4 xl:flex-shrink-0">
                 <div className="max-w-lg mx-2">
                     <div className="flex justify-between mr-2">
                         <div className="text-bold text-lg font-bold">{title}</div>
-                        <SecondaryButton onClick={()=>{}}>
-                            Add new category
+                        <SecondaryButton onClick={()=>setIsModalOpen(true)}>
+                            Add category
                         </SecondaryButton>
                     </div>
                     <PlanningBarChart
