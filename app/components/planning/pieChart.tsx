@@ -1,15 +1,15 @@
 import { Chart } from "react-google-charts";
-import { Category } from "~/types/category";
+import { PlanningLine } from "~/types/planning_line";
 
 interface PieChartProps {
-    categories: Category[];
+    planningLines: PlanningLine[];
     className?: string;
 }
 
-const PieChart = ({ categories, className }: PieChartProps) => {
+const PieChart = ({ planningLines, className }: PieChartProps) => {
     const data = [
         ['Category', 'Value'],
-        ...categories.map(category => [category.title, category.real])
+        ...planningLines.map(line => [line.category.name, line.real])
     ];
 
     const options = {

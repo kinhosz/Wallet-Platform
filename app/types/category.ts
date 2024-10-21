@@ -1,5 +1,6 @@
 export interface Category {
-    title: string;
-    planned: number;
-    real: number;
+    name: string;
+    description: string;
+    icon: number;
+    uuid?: string;
 }
