@@ -1,17 +1,6 @@
 import React from 'react';
 import { useCurrency } from '~/context/currency';
-
-const MonetarySymbol: React.FC = () => {
-    const currency = useCurrency();
-    return (
-        <>
-            {currency === 'BRL' && 'R$ '}
-            {currency === 'GBP' && '£ '}
-            {currency === 'USD' && '$ '}
-            {currency === 'EUR' && '€ '}
-        </>
-    );
-}
+import { getCurrencySymbol } from '../helper/getCurrencySymbol';
 
 const Monetary: React.FC<{
     className?: string;
@@ -22,10 +11,11 @@ const Monetary: React.FC<{
 }) => {
     const negative = Math.sign(value) === -1;
     const finalValue = Math.abs(value).toFixed(2);
+    const currency = useCurrency();
 
     return (
         <div className={`font-sans ${ negative ? 'text-wallet_red': 'text-black'} ${className}`}>
-            <MonetarySymbol />{' '}{finalValue}
+            {getCurrencySymbol(currency)}{' '}{finalValue}
         </div>
     );
 };
