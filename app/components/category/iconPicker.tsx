@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
-import { IconsList } from "./iconsList";
+import { IconsList } from '@/components/CategoryIcon';
 
 interface IconPickerProps {
     selected: number;

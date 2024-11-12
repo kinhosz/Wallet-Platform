@@ -3,11 +3,11 @@ import MainButton from "../mainButton";
 import { useCurrency } from "~/context/currency";
 import { getCurrencySymbol } from "../../helper/getCurrencySymbol";
 import { FaTimes } from "react-icons/fa";
-import getCategoryIcon from "../category/getCategoryIcon";
 import IconPicker from "../category/iconPicker";
 import CategoriesSearch from "../category/categoriesSearch";
 import { Form } from "@remix-run/react";
 import { Category } from "~/types/category";
+import { CategoryIcon } from "@/components/CategoryIcon";
 
 interface AddCategoryModalProps {
     onClose: () => void;
@@ -89,8 +89,6 @@ export default function AddCategoryModal({ onClose, isIncome, categories, planni
         setDescription(inputValue);
     }
 
-    const categoryIcon = getCategoryIcon(selectedIcon);
-
     return (
         <Form method="post" action="/planning" onSubmit={() => onClose()}
             className="fixed inset-0 backdrop-blur-sm z-50 flex items-center justify-center">
@@ -139,7 +137,7 @@ export default function AddCategoryModal({ onClose, isIncome, categories, planni
                                 <button name="icon" onClick={() => setIsIconPickerOpen(!isIconPickerOpen)} type="button"
                                     className='flex items-center justify-center rounded-full text-sm p-2 bg-wallet_gray w-full'
                                 >
-                                    { categoryIcon }
+                                    <CategoryIcon id={selectedIcon} />
                                 </button>
                             </div>
                         </div>
