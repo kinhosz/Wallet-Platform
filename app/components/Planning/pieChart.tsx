@@ -9,7 +9,7 @@ interface PieChartProps {
 const PieChart = ({ planningLines, className }: PieChartProps) => {
     const data = [
         ['Category', 'Value'],
-        ...planningLines.map(line => [line.category.name, line.real])
+        ...planningLines.map(line => [line.category.name, Math.abs(line.real)])
     ];
 
     const options = {

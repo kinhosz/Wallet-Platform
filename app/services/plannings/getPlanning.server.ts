@@ -26,12 +26,6 @@ export default async function GetPlanning(token: string, currency: string): Prom
         endDate: raw_response.end_date ?? "No data",
         expense: (raw_response.planning_lines ?? []).filter((line) => {
             return line.planned <= 0.0;
-        }).map((category) => {
-            return {
-                ...category,
-                planned: -category.planned,
-                real: -category.real,
-            }
         }),
         income: (raw_response.planning_lines ?? []).filter((line) => {
             return line.planned > 0.0;

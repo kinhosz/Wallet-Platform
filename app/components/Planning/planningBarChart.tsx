@@ -10,10 +10,12 @@ interface BudgetProps {
 }
 
 export default function PlanningBarChart({ planned, real, className }: BudgetProps) {
+    const abs_planned = Math.abs(planned);
+    const abs_real = Math.abs(real);
     const data = [
         ['', '', { role: "style" }],
-        ["Planned", planned, theme.theme.extend.colors.wallet_blue],
-        ["Real", real, theme.theme.extend.colors.wallet_orange],
+        ["Planned", abs_planned, theme.theme.extend.colors.wallet_blue],
+        ["Real", abs_real, theme.theme.extend.colors.wallet_orange],
     ];
 
     const options = {
@@ -28,7 +30,7 @@ export default function PlanningBarChart({ planned, real, className }: BudgetPro
         hAxis: {
             viewWindow: {
                 min: 0,
-                max: Math.max(planned, real) * 1.1,
+                max: Math.max(abs_planned, abs_real) * 1.1,
             },
             textPosition: 'none',
             gridlines: { count: 0 },
@@ -44,25 +46,23 @@ export default function PlanningBarChart({ planned, real, className }: BudgetPro
     };
 
     return (
-        <div className="mr-4 md:mr-0">
-            <div className="m-2 grid grid-cols-4 text-xs md:text-sm mr-2">
-                <div>
-                    <div>Planned</div>
-                    <div>Real</div>
-                </div>
-                <div>
-                    <Monetary value={planned} className="text-wallet_blue text-bold"/>
-                    <Monetary value={real} className="text-wallet_orange_light text-bold"/>
-                </div>
-                <div className="col-span-2">
-                    <Chart
-                        chartType="BarChart"
-                        data={data}
-                        options={options}
-                        className={className}
-                        height="100%"
-                    />
-                </div>
+        <div className="m-1 flex text-xs sm:text-sm">
+            <div className="w-fit px-2">
+                <div>Planned</div>
+                <div>Real</div>
+            </div>
+            <div className="w-fit px-2">
+                <Monetary value={abs_planned} className="text-wallet_blue text-bold"/>
+                <Monetary value={abs_real} className="text-wallet_orange_light text-bold"/>
+            </div>
+            <div className="w-fit px-2">
+                <Chart
+                    chartType="BarChart"
+                    data={data}
+                    options={options}
+                    className={className}
+                    height="100%"
+                />
             </div>
         </div>
     );

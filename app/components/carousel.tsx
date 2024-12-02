@@ -37,19 +37,14 @@ const Carousel: React.FC<CarouselProps> = ({ children, className }) => {
   };
 
   return (
-    <div className={`relative mt-4 ${className}`}>
-      <button
-        onClick={scrollRight}
-        className={`absolute right-2 top-0 transform text-sm -translate-y-1/2 text-wallet_orange underline
-          text-bold mx-2 z-10 ${buttonEnabled ? '': 'cursor-not-allowed'}`}
-        disabled={!buttonEnabled}
-      >
-        Next &gt;
-      </button>
-      <div
-        ref={carouselRef}
-        className="flex overflow-x-hidden whitespace-nowrap scroll-smooth"
-      >
+    <div className={className}>
+      <div className="w-full flex justify-end">
+        <button className={`p-2 text-sm text-wallet_orange underline text-bold ${buttonEnabled ? '': 'cursor-not-allowed'}`}
+          onClick={scrollRight} disabled={!buttonEnabled}>
+            Next &gt;
+        </button>
+      </div>
+      <div ref={carouselRef} className="flex overflow-x-hidden whitespace-nowrap scroll-smooth">
         {children}
       </div>
     </div>
