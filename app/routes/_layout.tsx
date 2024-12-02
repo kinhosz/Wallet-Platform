@@ -59,7 +59,7 @@ export default function Layout() {
   return (
     <UserContext.Provider value={context.user}>
       <CurrencyContext.Provider value={currencyCode}>
-        <div className="font-semibold relative">
+        <div className="font-semibold relative min-w-80">
           <nav className="sticky top-0 left-0 right-0 z-20 bg-wallet_blue text-white">
             <div className="flex justify-between px-4 py-8 items-center">
               <div className="flex text-start">

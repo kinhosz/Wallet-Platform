@@ -1,8 +1,5 @@
 import MainButton from "~/components/mainButton";
-import Budget from "~/components/planning/budget";
-import Summary from "~/components/planning/summary";
 import 'tailwindcss/tailwind.css';
-import TableComponent from "~/components/planning/table";
 import { useLoaderData } from "@remix-run/react";
 import Carousel from "~/components/carousel";
 import { ActionFunctionArgs, LoaderFunction, redirect } from "@remix-run/node";
@@ -13,6 +10,9 @@ import { Category } from "~/types/category";
 import UpsertCategory from "~/services/categories/upsert.server";
 import UpsertPlanningLine, { UpsertPlanningLineRequest } from "~/services/plannings/upsert.server";
 import GetPlanning from "~/services/plannings/getPlanning.server";
+import PlanningCard from "@/components/Planning/PlanningCard";
+import Budget from "~/components/Planning/budget";
+import Summary from "~/components/Planning/summary";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const token = await GetAuthToken(request);
@@ -83,12 +83,16 @@ export default function Main() {
         </div>
       </div>
       <Carousel className="xl:hidden">
-        <TableComponent planningLines={planning.expense} allCategories={allCategories} planningUuid={planning.uuid}/>
-        <TableComponent planningLines={planning.income} isIncome={true} allCategories={allCategories} planningUuid={planning.uuid}/>
+        <div className="w-screen shrink-0 flex justify-center">
+          <PlanningCard lines={planning.expense} allCategories={allCategories} planningUuid={planning.uuid} />
+        </div>
+        <div className="w-screen shrink-0 flex justify-center">
+          <PlanningCard lines={planning.income} allCategories={allCategories} planningUuid={planning.uuid} />
+        </div>
       </Carousel>
-      <div className="hidden xl:flex">
-        <TableComponent planningLines={planning.expense} allCategories={allCategories} planningUuid={planning.uuid}/>
-        <TableComponent planningLines={planning.income} isIncome={true} allCategories={allCategories} planningUuid={planning.uuid}/>
+      <div className="hidden xl:flex xl:justify-around">
+        <PlanningCard lines={planning.expense} allCategories={allCategories} planningUuid={planning.uuid}/>
+        <PlanningCard lines={planning.income} allCategories={allCategories} planningUuid={planning.uuid}/>
       </div>
       <div>
     </div>
