@@ -1,7 +1,7 @@
 import { ActionFunctionArgs, createCookie, json, LoaderFunction, redirect } from '@remix-run/node';
 import { useActionData, Form, useNavigate } from '@remix-run/react';
-import WarningField from '../components/warning';
-import ApiRequest from '../services/apiRequest.server';
+import WarningField from '~/components/warning';
+import ApiRequest from '~/services/apiRequest.server';
 import GetAuthToken from '~/services/getAuthToken.server';
 
 export const loader: LoaderFunction = async ({ request }) => {

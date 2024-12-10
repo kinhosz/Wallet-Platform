@@ -19,7 +19,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 };
 
 export const loader: LoaderFunction = async () => {
-    return redirect('/');
+    return redirect('/overview');
 };
 
 function Logout() {

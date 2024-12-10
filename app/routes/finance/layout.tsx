@@ -1,12 +1,12 @@
 import { redirect, ActionFunctionArgs } from "@remix-run/node";
-import ApiRequest from "../services/apiRequest.server";
+import ApiRequest from "~/services/apiRequest.server";
 import GetAuthToken from "~/services/getAuthToken.server";
 import { Outlet, useLoaderData, useLocation } from "@remix-run/react";
 import { Context } from "~/types/context";
 import TabSheet from "~/components/tabsheet";
 import { useEffect, useState } from "react";
 import { FiUser } from "react-icons/fi";
-import Sidebar from "../components/sidebar";
+import Sidebar from "~/components/sidebar";
 import CurrencySelector from "~/components/currencySelector";
 import { CurrencyContext } from "~/context/currency";
 import { UserContext } from "~/context/user";
@@ -79,7 +79,7 @@ export default function Layout() {
             <div className="flex mt-2">
               <TabSheet active={activePath == 'transactions'} title={'Transactions'} to={'/transactions'} />
               <TabSheet active={activePath == 'overview'} title={'Overview'} to={'/overview'} />
-              <TabSheet active={activePath == 'planning'} title={'Planning'} to={'/planning'} />
+              <TabSheet active={activePath == 'plannings'} title={'Planning'} to={'/plannings'} />
               <TabSheet active={activePath == 'charts'} title={'Charts'} to={'/charts'} />
             </div>
             <div className="bg-white h-2" />
