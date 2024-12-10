@@ -38,7 +38,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   }
 
   await UpsertPlanningLine(token, planning_uuid, line);
-  return redirect('/planning');
+  return redirect('/plannings');
 };
 
 export const loader: LoaderFunction = async ({ request }) => {
