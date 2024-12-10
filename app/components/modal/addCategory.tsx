@@ -90,7 +90,7 @@ export default function AddCategoryModal({ onClose, isIncome, categories, planni
     }
 
     return (
-        <Form method="post" action="/planning" onSubmit={() => onClose()}
+        <Form method="post" action="/plannings" onSubmit={() => onClose()}
             className="fixed inset-0 backdrop-blur-sm z-50 flex items-center justify-center">
             <div
                 ref={modalRef}
