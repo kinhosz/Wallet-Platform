@@ -10,7 +10,7 @@ interface PlanningBoxProps {
 const PlanningBox = ({index, startDate, endDate, final_balance}: PlanningBoxProps) => {
     
     return (
-       <div className="m-1 flex flex-row border rounded-lg drop-shadow-sm hover:border-gray-400 md:max-w-md">
+       <div className="m-1 flex flex-row border rounded-lg drop-shadow-sm hover:border-gray-400 md:w-2/5">
             <div className="grow">
                 <div className="p-1 text-lg font-normal italic">
                     Planning #{index}
