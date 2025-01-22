@@ -1,28 +1,33 @@
 import Monetary from "../monetary";
+import { Link } from '@remix-run/react';
 
 interface PlanningBoxProps {
-    index: number;
+    uuid: string;
     startDate: string;
     endDate: string;
     final_balance: number;
 }
 
-const PlanningBox = ({index, startDate, endDate, final_balance}: PlanningBoxProps) => {
+const PlanningBox = ({uuid, startDate, endDate, final_balance}: PlanningBoxProps) => {
     
+    const planningDetailsPath = () => {
+        return `/plannings/${uuid}`
+    }
+
     return (
-       <div className="m-1 flex flex-row border rounded-lg drop-shadow-sm hover:border-gray-400 md:w-2/5">
-            <div className="grow">
-                <div className="p-1 text-lg font-normal italic">
-                    Planning #{index}
-                </div>
+       <Link to={planningDetailsPath()} className="w-[calc(100vw-8px)] m-1 flex flex-row border rounded-lg drop-shadow-sm hover:border-gray-400 md:w-2/5">
+            <div className="w-3/5">
+                <p className="p-1 text-lg font-normal italic truncate overflow-hidden whitespace-nowrap">
+                    Planning #{uuid}
+                </p>
                 <div className="text-xs p-1 font-normal">
                     {startDate} - {endDate}
                 </div>
             </div>
-            <div className="bg-white font-bold w-32 flex justify-end p-2 items-center">
+            <div className="bg-white font-bold w-2/5 flex justify-end p-2 items-center">
                 <Monetary decorate={true} value={final_balance}/>
             </div>
-        </div>
+        </Link>
          
     );
 }
