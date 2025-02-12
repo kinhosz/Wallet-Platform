@@ -1,6 +1,6 @@
 import MainButton from "~/components/mainButton";
 import 'tailwindcss/tailwind.css';
-import { useLoaderData } from "@remix-run/react";
+import { Link, useLoaderData } from "@remix-run/react";
 import Carousel from "~/components/carousel";
 import { ActionFunctionArgs, LoaderFunction, redirect } from "@remix-run/node";
 import GetAuthToken from "~/services/getAuthToken.server";
@@ -68,6 +68,9 @@ export default function Main() {
             <div className="text-sm font-sans">{planning.startDate}</div>
             <div className="text-sm font-sans">{planning.endDate}</div>
           </div>
+          <Link to={"/plannings"} className="underline text-sm">
+            See All Plannings
+          </Link>
         </div>
         <div className="my-4 md:hidden">
           <Carousel>
