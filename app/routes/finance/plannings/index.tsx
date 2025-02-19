@@ -1,38 +1,21 @@
+import { LoaderFunction, redirect } from "@remix-run/node";
+import { useLoaderData } from "@remix-run/react";
 import PlanningBox from "~/components/Planning/PlanningBox";
+import GetAuthToken from "~/services/getAuthToken.server";
+import getCurrencyFromCookie from "~/services/getCurrencyToken";
+import GetPlannings from "~/services/plannings/getPlannings.server";
+import { Planning } from "~/types/planning";
 
-
-function getdata () {
-    const plannings = [
-        {
-            uuid: "jadhjaf",
-            startDate: "01/01/0111",
-            endDate: "01/01/0011",
-            final_balance: 100,
-        },
-        {
-            uuid: "fajfpjfpeifj",
-            startDate: "01/01/0111",
-            endDate: "01/01/0011",
-            final_balance: -700,
-        },
-        {
-            uuid: "qwertyuiopçlkjhgjkjflkajlsak",
-            startDate: "01/01/0111",
-            endDate: "01/01/0011",
-            final_balance: 600000,
-        },
-        {
-            uuid: "fdsfjds",
-            startDate: "01/01/0111",
-            endDate: "04/01/0011",
-            final_balance: -100,
-        },
-    ];
+export const loader: LoaderFunction = async ({ request }) => {
+    const token = await GetAuthToken(request);
+    if (!token) return redirect('/login');
+    const currency = await getCurrencyFromCookie(request);
+    const plannings = GetPlannings(token, currency);
     return plannings;
 }
 
 export default function Main() {
-    const plannings = getdata();
+    const { plannings } = useLoaderData<typeof loader>();
 
     return (
         <div className="flex justify-center flex-col">
@@ -41,7 +24,7 @@ export default function Main() {
                 <p className="text-base italic font-normal text-center">Select a Planning to see more details</p>
             </div>
             <div>
-                { plannings.map((planning, uuid) => (
+                { plannings.map((planning: Planning, uuid: string) => (
                     <div className="flex justify-center"> 
                         <PlanningBox 
                             key={uuid} 
