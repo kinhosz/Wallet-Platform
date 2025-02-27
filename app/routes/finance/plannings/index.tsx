@@ -15,7 +15,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 }
 
 export default function Main() {
-    const { plannings } = useLoaderData<typeof loader>();
+    const plannings = useLoaderData<typeof loader>();
 
     return (
         <div className="flex justify-center flex-col">

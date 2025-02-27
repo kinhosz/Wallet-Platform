@@ -16,7 +16,6 @@ export default async function GetPlannings(token: string, currency: string) {
         { 'Content-Type': 'application/json', 'Authorization': token });
 
     const raw_plannings: RawResponse = await response?.json();
-    console.log (typeof raw_plannings.plannings)
     const plannings = raw_plannings.plannings.map((planning)=>{
         return {
             uuid: planning.uuid,
