@@ -11,9 +11,9 @@ interface RawResponse {
     planning_lines: PlanningLine[],
 }
 
-export default async function GetPlanning(token: string, currency: string): Promise<Planning> {
+export default async function GetPlanning(token: string, uuid: string, currency: string): Promise<Planning> {
     const response = await ApiRequest(
-        `finance/plannings/current?currency=${currency}`,
+        `finance/plannings/${uuid}?currency=${currency}`,
         'GET', { 'Content-Type': 'application/json', 'Authorization': token, },
     );
 

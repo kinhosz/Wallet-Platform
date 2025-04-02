@@ -41,13 +41,12 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   return redirect('/plannings');
 };
 
-export const loader: LoaderFunction = async ({ request }) => {
+export const loader: LoaderFunction = async ({ request, params }) => {
   const token = await GetAuthToken(request);
   if (!token) return redirect('/login');
   const currency = await getCurrencyFromCookie(request);
-
   const categories = getCategories(token);
-  const planning = GetPlanning(token, currency);
+  const planning = GetPlanning(token, params.uuid!, currency);
 
   return {
     allCategories: await categories,
