@@ -1,6 +1,6 @@
-import MainButton from "~/components/mainButton";
+{/*import MainButton from "~/components/mainButton";*/}
 import 'tailwindcss/tailwind.css';
-import { Link, useLoaderData } from "@remix-run/react";
+import { Link, Navigate, useLoaderData } from "@remix-run/react";
 import Carousel from "~/components/carousel";
 import { ActionFunctionArgs, LoaderFunction, redirect } from "@remix-run/node";
 import GetAuthToken from "~/services/getAuthToken.server";
@@ -13,6 +13,9 @@ import GetPlanning from "~/services/plannings/getPlanning.server";
 import PlanningCard from "@/components/Planning/PlanningCard";
 import Budget from "~/components/Planning/budget";
 import Summary from "~/components/Planning/summary";
+import { useState } from "react";
+import { useNavigate } from "@remix-run/react";
+import { MdChevronRight, MdKeyboardArrowDown, MdMenu } from 'react-icons/md';
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const token = await GetAuthToken(request);
@@ -56,35 +59,50 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 
 export default function Main() {
   const { allCategories, planning } = useLoaderData<typeof loader>();
+  const [showOptions, setShowOptions] = useState(false);
+  const Navigate = useNavigate();
 
   return (
     <div>
       <div className="my-4 flex flex-col md:flex-row-reverse md:justify-between md:items-start">
         <div className="flex justify-between flex-row-reverse md:flex-col mx-2">
-          <MainButton onClick={()=>{}}>Close month</MainButton>
-          <div className="mx-2">
-            <div className="text-md whitespace-nowrap">Current Period</div>
-            <div className="text-sm font-sans">{planning.startDate}</div>
-            <div className="text-sm font-sans">{planning.endDate}</div>
+          <button onClick={() => setShowOptions(!showOptions)}>
+          <div className="flex items-center justify-between gap-2 border border-gray-500 rounded-md px-3 py-2 bg-gray-300 hover:bg-red-100">
+          <span className="text-md font-semibold">Options</span>
+            <MdMenu size={20} className='' />
           </div>
-          <Link to={"/plannings"} className="underline text-sm">
-            See All Plannings
-          </Link>
-        </div>
-        <div className="my-4 md:hidden">
-          <Carousel>
-            <Budget initial_balance={planning.initial_balance} final_balance={planning.final_balance} />
-            <Summary initial_balance={planning.initial_balance} final_balance={planning.final_balance} />
-          </Carousel>
-        </div>
-        <div className="my-4 hidden md:block w-full">
-          <div className="flex justify-around">
-            <Budget initial_balance={planning.initial_balance} final_balance={planning.final_balance} />
-            <Summary initial_balance={planning.initial_balance} final_balance={planning.final_balance} />
+        </button>
+
+        {showOptions && (
+          <div className="flex flex-col mt-1 bg-white shadow-md rounded-md overflow-hidden">
+            <button onClick={() => Navigate("/plannings")} className="border border-gray-500 bg-gray-300 rounded-md text-left px-3 py-2 hover:bg-red-100 text-rd-600">
+              See All Plannings
+            </button>
+            <button onClick={() => Navigate("/plannings")} className="border border-gray-500 bg-gray-300 rounded-md text-left px-3 py-2 hover:bg-red-100 text-rd-600">
+              End Planning
+            </button>
           </div>
+        )}
+        <div className="mx-2">
+          <div className="text-md whitespace-nowrap">Current Period</div>
+          <div className="text-sm font-sans">{planning.startDate}</div>
+          <div className="text-sm font-sans">{planning.endDate}</div>
         </div>
       </div>
-      <Carousel className="xl:hidden">
+      <div className="my-4 md:hidden">
+        <Carousel>
+          <Budget initial_balance={planning.initial_balance} final_balance={planning.final_balance} />
+          <Summary initial_balance={planning.initial_balance} final_balance={planning.final_balance} />
+        </Carousel>
+      </div>
+      <div className="my-4 hidden md:block w-full">
+        <div className="flex justify-around">
+          <Budget initial_balance={planning.initial_balance} final_balance={planning.final_balance} />
+          <Summary initial_balance={planning.initial_balance} final_balance={planning.final_balance} />
+        </div>
+      </div>
+    </div>
+    <Carousel className="xl:hidden">
         <div className="w-screen shrink-0 flex justify-center">
           <PlanningCard lines={planning.expense} allCategories={allCategories} planningUuid={planning.uuid} />
         </div>
@@ -93,11 +111,9 @@ export default function Main() {
         </div>
       </Carousel>
       <div className="hidden xl:flex xl:justify-around">
-        <PlanningCard lines={planning.expense} allCategories={allCategories} planningUuid={planning.uuid}/>
-        <PlanningCard lines={planning.income} allCategories={allCategories} planningUuid={planning.uuid}/>
+        <PlanningCard lines={planning.expense} allCategories={allCategories} planningUuid={planning.uuid} />
+        <PlanningCard lines={planning.income} allCategories={allCategories} planningUuid={planning.uuid} />
       </div>
-      <div>
-    </div>
   </div>
   );
 }
