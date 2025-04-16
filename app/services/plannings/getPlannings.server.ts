@@ -2,14 +2,14 @@ import ApiRequest from "../apiRequest.server";
 
 interface RawResponse {
    plannings: RawPlanning[]
-};
+}
 
 interface RawPlanning {
     uuid: string,
     start_date: string,
     end_date: string,
     balance: number
-};
+}
 
 export default async function GetPlannings(token: string, currency: string) {
     const response = await ApiRequest(`finance/plannings?currency=${currency}`, "GET", 
