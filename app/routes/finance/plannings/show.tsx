@@ -1,6 +1,5 @@
-{/*import MainButton from "~/components/mainButton";*/}
 import 'tailwindcss/tailwind.css';
-import { Link, Navigate, useLoaderData } from "@remix-run/react";
+import { Link, useLoaderData } from "@remix-run/react";
 import Carousel from "~/components/carousel";
 import { ActionFunctionArgs, LoaderFunction, redirect } from "@remix-run/node";
 import GetAuthToken from "~/services/getAuthToken.server";
@@ -15,7 +14,7 @@ import Budget from "~/components/Planning/budget";
 import Summary from "~/components/Planning/summary";
 import { useState } from "react";
 import { useNavigate } from "@remix-run/react";
-import { MdChevronRight, MdKeyboardArrowDown, MdMenu } from 'react-icons/md';
+import { MdMenu } from 'react-icons/md';
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const token = await GetAuthToken(request);
@@ -67,7 +66,7 @@ export default function Main() {
       <div className="my-4 flex flex-col md:flex-row-reverse md:justify-between md:items-start">
         <div className="flex justify-between flex-row-reverse md:flex-col mx-2">
           <button onClick={() => setShowOptions(!showOptions)}>
-          <div className="flex items-center justify-between gap-2 border border-gray-500 rounded-md px-3 py-2 bg-gray-300 hover:bg-red-100">
+          <div className="flex items-center justify-between gap-2 border border-gray-500 rounded-md px-3 py-2 bg-gray-300 hover:bg-gray-400">
           <span className="text-md font-semibold">Options</span>
             <MdMenu size={20} className='' />
           </div>
@@ -75,12 +74,12 @@ export default function Main() {
 
         {showOptions && (
           <div className="flex flex-col mt-1 bg-white shadow-md rounded-md overflow-hidden">
-            <button onClick={() => Navigate("/plannings")} className="border border-gray-500 bg-gray-300 rounded-md text-left px-3 py-2 hover:bg-red-100 text-rd-600">
+            <Link to={"/plannings"} className="border border-gray-500 bg-gray-300 rounded-md text-left px-3 py-2 hover:bg-gray-400 text-rd-600">
               See All Plannings
-            </button>
-            <button onClick={() => Navigate("/plannings")} className="border border-gray-500 bg-gray-300 rounded-md text-left px-3 py-2 hover:bg-red-100 text-rd-600">
+            </Link>
+            <Link to={"/plannings"} className="border border-gray-500 bg-red-300 rounded-md text-left px-3 py-2 hover:bg-red-400 text-rd-600">
               End Planning
-            </button>
+            </Link>
           </div>
         )}
         <div className="mx-2">
