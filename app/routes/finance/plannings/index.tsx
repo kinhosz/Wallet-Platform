@@ -24,10 +24,9 @@ export default function Main() {
                 <p className="text-base italic font-normal text-center">Select a Planning to see more details</p>
             </div>
             <div>
-                { plannings.map((planning: Planning, uuid: string) => (
-                    <div className="flex justify-center"> 
-                        <PlanningBox 
-                            key={uuid} 
+                { plannings.map((planning: Planning, key: string) => (
+                    <div className="flex justify-center" key={key}> 
+                        <PlanningBox
                             uuid={planning.uuid} 
                             startDate={planning.startDate}
                             endDate={planning.endDate}
