@@ -64,16 +64,16 @@ export default function Main() {
   return (
     <div>
       <div className="my-4 flex flex-col md:flex-row-reverse md:justify-between md:items-start">
-        <div className="flex justify-between flex-row-reverse md:flex-col mx-2">
+        <div className="flex justify-between flex-row-reverse md:flex-col mx-2 relative">
           <button onClick={() => setShowOptions(!showOptions)}>
           <div className="flex items-center justify-between gap-2 border border-gray-500 rounded-md px-3 py-2 bg-gray-300 hover:bg-gray-400">
-          <span className="text-md font-semibold">Options</span>
+          <span className="hidden md:inline text-md font-semibold">Options</span>
             <MdMenu size={20} className='' />
           </div>
         </button>
 
         {showOptions && (
-          <div className="flex flex-col mt-1 bg-white shadow-md rounded-md overflow-hidden">
+          <div className="absolute right-0 top-full mt-1 text-xs+ flex flex-col bg-white shadow-md rounded-md overflow-hidden">
             <Link to={"/plannings"} className="border border-gray-500 bg-gray-300 rounded-md text-left px-3 py-2 hover:bg-gray-400 text-rd-600">
               See All Plannings
             </Link>
@@ -82,7 +82,7 @@ export default function Main() {
             </Link>
           </div>
         )}
-        <div className="mx-2">
+        <div className={`mx-2 ${showOptions ? 'md:hidden' : ''}`}>
           <div className="text-md whitespace-nowrap">Current Period</div>
           <div className="text-sm font-sans">{planning.startDate}</div>
           <div className="text-sm font-sans">{planning.endDate}</div>
