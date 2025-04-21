@@ -73,7 +73,7 @@ export default function Main() {
         </button>
 
         {showOptions && (
-          <div className="absolute right-0 top-full mt-1 text-xs+ flex flex-col bg-white shadow-md rounded-md overflow-hidden">
+          <div className="absolute right-0 top-full mt-1 text-xs flex flex-col bg-white shadow-md rounded-md overflow-hidden">
             <Link to={"/plannings"} className="border border-gray-500 bg-gray-300 rounded-md text-left px-3 py-2 hover:bg-gray-400 text-rd-600">
               See All Plannings
             </Link>
