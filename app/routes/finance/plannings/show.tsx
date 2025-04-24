@@ -59,6 +59,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 export default function Main() {
   const { allCategories, planning } = useLoaderData<typeof loader>();
   const [showOptions, setShowOptions] = useState(false);
+  const [showEndPlanningForm, setShowEndPlanningForm] = useState(false);
   const Navigate = useNavigate();
 
   return (
@@ -77,9 +78,9 @@ export default function Main() {
             <Link to={"/plannings"} className="border border-gray-500 bg-gray-300 rounded-md text-left px-3 py-2 hover:bg-gray-400 text-rd-600">
               See All Plannings
             </Link>
-            <Link to={"/plannings"} className="border border-gray-500 bg-red-300 rounded-md text-left px-3 py-2 hover:bg-red-400 text-rd-600">
+            <button onClick={() => setShowEndPlanningForm(true)} className="border border-gray-500 bg-red-300 rounded-md text-left px-3 py-2 hover:bg-red-400 text-rd-600">
               End Planning
-            </Link>
+            </button>
           </div>
         )}
         <div className={`mx-2 ${showOptions ? 'md:hidden' : ''}`}>
@@ -113,6 +114,27 @@ export default function Main() {
         <PlanningCard lines={planning.expense} allCategories={allCategories} planningUuid={planning.uuid} />
         <PlanningCard lines={planning.income} allCategories={allCategories} planningUuid={planning.uuid} />
       </div>
+      {showEndPlanningForm && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center z-50">
+          <div className="bg-white p-6 round-lg shadow-lg w-11/12 max-w-md relative">
+            <button className="absolute top-2 right-2 text-gray-500 hover:text-black" onClick={() => setShowEndPlanningForm(false)}>
+              X
+            </button>
+            <h2 className="text-x1 text-orange-600 font-bold mb-4">Are you sure you want ciose this planning?</h2>
+            <h3 className='italic text-sm text-gray-500'>This action cannot be undone</h3>
+              <div className="mb-4">
+              </div>
+              <div className="flex gap-4">
+                <button type='submit' className="w-1/2 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
+                  Cancel
+                </button>
+                <button type='submit' className="w-1/2 bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">
+                  End planning
+                </button>
+              </div>
+          </div>
+        </div>
+      )}
   </div>
   );
 }
