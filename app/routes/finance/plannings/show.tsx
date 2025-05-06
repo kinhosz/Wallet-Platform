@@ -120,12 +120,12 @@ export default function Main() {
             <button className="absolute top-2 right-2 text-gray-500 hover:text-black" onClick={() => setShowEndPlanningForm(false)}>
               X
             </button>
-            <h2 className="text-x1 text-orange-600 font-bold mb-4">Are you sure you want ciose this planning?</h2>
+            <h2 className="text-x1 text-orange-600 font-bold mb-4">Are you sure you want close this planning?</h2>
             <h3 className='italic text-sm text-gray-500'>This action cannot be undone</h3>
               <div className="mb-4">
               </div>
               <div className="flex gap-4">
-                <button type='submit' className="w-1/2 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
+                <button onClick={() => setShowEndPlanningForm(false)} className="w-1/2 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
                   Cancel
                 </button>
                 <button type='submit' className="w-1/2 bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">
