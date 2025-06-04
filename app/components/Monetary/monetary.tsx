@@ -1,6 +1,6 @@
 import React from 'react';
 import { useCurrency } from '~/context/currency';
-import { getCurrencySymbol } from '../helper/getCurrencySymbol';
+import { getCurrencySymbol } from '~/helper/getCurrencySymbol';
 
 const Monetary: React.FC<{
     className?: string;

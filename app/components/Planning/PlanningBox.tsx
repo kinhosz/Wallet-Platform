@@ -1,4 +1,4 @@
-import Monetary from "../monetary";
+import { Monetary } from "~/components/Monetary";
 import { Link } from '@remix-run/react';
 
 interface PlanningBoxProps {

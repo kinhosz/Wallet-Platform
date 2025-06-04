@@ -1,5 +1,5 @@
 import { CategoryIcon } from "@/components/CategoryIcon";
-import Monetary from "@/components/monetary";
+import { Monetary } from "~/components/Monetary";
 import { PlanningLine } from "@/types/planning_line";
 
 interface PlanningLineCardProps {

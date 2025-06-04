@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/no-named-as-default
 import Chart from "react-google-charts";
 import theme from "tailwind.config";
-import Monetary from "../monetary";
+import { Monetary } from "~/components/Monetary";
 
 interface BudgetProps {
     planned: number;

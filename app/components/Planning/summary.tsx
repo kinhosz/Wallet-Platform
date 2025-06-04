@@ -1,4 +1,4 @@
-import Monetary from "../monetary";
+import { Monetary } from "~/components/Monetary";
 
 interface SummaryProps {
     initial_balance: number;
