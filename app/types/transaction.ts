@@ -3,6 +3,7 @@ export interface Transaction {
     date: Date;
     amount: number;
     currency: string;
-    category: string;
+    category: string; // FIXME: Category Type
     icon: number;
+    uuid: string;
 }
