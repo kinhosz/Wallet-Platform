@@ -27,8 +27,11 @@ export default defineConfig({
             route("charts", "routes/finance/charts/index.tsx");
             route("overview", "routes/finance/overview/index.tsx");
             route("plannings", "routes/finance/plannings/index.tsx");
-            route("/plannings/:uuid", "routes/finance/plannings/show.tsx");
-            route("transactions", "routes/finance/transactions/index.tsx");
+            route("plannings/:uuid", "routes/finance/plannings/show.tsx");
+            route("transactions/", "routes/finance/transactions/index.tsx", () => {
+              route(":uuid", "routes/finance/transactions/show.tsx");
+              route("delete", "routes/finance/transactions/delete.tsx");
+            });
           });
         });
       },

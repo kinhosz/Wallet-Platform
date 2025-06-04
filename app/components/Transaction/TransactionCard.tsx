@@ -1,4 +1,5 @@
-import Monetary from "../monetary";
+import { Link } from "@remix-run/react";
+import { Monetary } from "~/components/Monetary";
 import { CategoryIcon } from "@/components/CategoryIcon";
 
 export interface TransactionCardProps {
@@ -7,11 +8,18 @@ export interface TransactionCardProps {
   description: string;
   icon: number;
   date: Date;
+  uuid: string;
+  className?: string;
 }
 
-const TransactionCard = ({ amount, category, description, icon, date }: TransactionCardProps) => {
+const TransactionCard = ({ amount, category, description, icon, date, uuid, className }: TransactionCardProps) => {
+  function getUrl() {
+    return `/transactions/${uuid}`;
+  }
+
   return (
-    <div className="bg-white flex mx-1 lg:max-w-xl h-14 border rounded-lg drop-shadow-sm hover:border-gray-400">
+    <Link to={getUrl()} className={`${className} bg-white flex lg:max-w-xl h-14 border
+      rounded-lg drop-shadow-sm hover:border-gray-400`}>
       <div className="hidden md:w-28 md:flex md:justify-start md:items-center p-1">
         <p className="text-base truncate block font-normal">{date.toLocaleDateString("pt-BR")}</p>
       </div>
@@ -36,7 +44,7 @@ const TransactionCard = ({ amount, category, description, icon, date }: Transact
       <div className="w-28 flex items-center justify-end px-1">
         <Monetary value={amount} decorate={true} />
       </div>
-    </div>
+    </Link>
   );
 };
 
