@@ -10,7 +10,7 @@ export default async function GetTransaction(token: string, uuid: string) {
   const t: RawTransaction = await response?.json();
   return {
     description: t.description,
-    date: new Date(t.occurred_at),
+    date: t.occurred_at,
     amount: Number(t.value),
     currency: t.currency,
     category: t.category_name,

@@ -7,12 +7,13 @@ export interface TransactionCardProps {
   category: string;
   description: string;
   icon: number;
-  date: Date;
+  date: string;
   uuid: string;
   className?: string;
 }
 
 const TransactionCard = ({ amount, category, description, icon, date, uuid, className }: TransactionCardProps) => {
+  const date_date = new Date(date);
   function getUrl() {
     return `/transactions/${uuid}`;
   }
@@ -21,7 +22,7 @@ const TransactionCard = ({ amount, category, description, icon, date, uuid, clas
     <Link to={getUrl()} className={`${className} bg-white flex lg:max-w-xl h-14 border
       rounded-lg drop-shadow-sm hover:border-gray-400`}>
       <div className="hidden md:w-28 md:flex md:justify-start md:items-center p-1">
-        <p className="text-base truncate block font-normal">{date.toLocaleDateString("pt-BR")}</p>
+        <p className="text-base truncate block font-normal">{date_date.toLocaleDateString("pt-BR")}</p>
       </div>
       <div className="w-10 flex justify-center items-center">
         <div className="bg-wallet_gray p-2 rounded-full">

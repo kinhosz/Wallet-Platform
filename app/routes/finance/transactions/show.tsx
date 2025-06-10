@@ -57,7 +57,8 @@ export default function Transaction() {
   const [mounted, setMounted] = useState(false);
   const [visible, setVisible] = useState(false);
 
-  const [date, setDate] = useState(transaction.date.toISOString().split("T")[0]);
+  const transaction_date_date = new Date(transaction.date);
+  const [date, setDate] = useState(transaction_date_date.toISOString().split("T")[0]);
   const [showCategorySelection, setShowCategorySelection] = useState(false);
   const [footerState, setFooterState] = useState<'options' | 'deleting' | 'editing' | 'blocked'>(
     (new Date(planning.startDate) > transaction.date ? 'blocked' : 'options')
@@ -107,7 +108,7 @@ export default function Transaction() {
     formRef.current?.reset();
     setFooterState('options');
     setCategory(originalCategory);
-    setDate(transaction.date.toISOString().split("T")[0]);
+    setDate(transaction_date_date.toISOString().split("T")[0]);
   }
 
   const handleSave = () => {
