@@ -14,7 +14,7 @@ export default async function GetTransactions(token: string, currency: string) {
     (t: RawTransaction) => {
       return {
         description: t.description,
-        date: new Date(t.occurred_at),
+        date: t.occurred_at,
         amount: Number(t.value),
         currency: t.currency,
         category: t.category_name,
